@@ -42,7 +42,7 @@ pcap_if_t *seleccionarInterface(){
     }
     return d;
 }
-filtro *especificarFiltros(){
+Filtro *especificarFiltros(){
     cout<<"Especificar filtros:\n";
     while(true){
         
@@ -51,7 +51,7 @@ filtro *especificarFiltros(){
 }
 int main(void){
     pcap_if_t *interface;
-    filtro *filtros;
+    Filtro *filtros;
     interface = seleccionarInterface();
     filtros = especificarFiltros();
 
