@@ -21,8 +21,7 @@ pcap_if_t *seleccionarInterface(){
         fprintf(stderr,"Error al encontrar dispositivos: %s\n", errbuf);
         exit(1);
     }
-    for(i=0,d = alldevs; d != NULL; d= d->next){
-        cout<<++i<<". "<<d->name<<'\n';        
+    for(i=0,d = alldevs; d != NULL; d= d->next){  
         if (d->description)
             cout<<++i<<". "<<d->name<<" ("<<d->description<<")\n";              
         else
