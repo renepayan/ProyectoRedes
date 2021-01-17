@@ -8,7 +8,7 @@ class Filtro{
         std::string ipOrigen, ipDestino;
     public:
         Filtro();
-        Filtro(int aplicacion, int puertoOrigen, int puertoDestino, String ipOrigen, String ipDestino);                
+        Filtro(int aplicacion, int puertoOrigen, int puertoDestino, std::string ipOrigen, std::string ipDestino);
 
         int getAplicacion();
         void setAplicacion(int aplicacion);
@@ -24,6 +24,5 @@ class Filtro{
 
         std::string getIpDestino();
         void setIpOrigen(std::string ipDestino);
-        
 };
 #endif
