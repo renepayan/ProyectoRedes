@@ -43,15 +43,15 @@ pcap_if_t *seleccionarInterface(){
 }
 vector<Filtro> especificarFiltros(){
     vector<Filtro> filtros;
-    String strTemp;
-    int intTemp;
+    string strTemp;
+    int intTemp, opcion;
     cout<<"Especificar filtros:\n";
     while(true){        
         cout<<"Desea agregar un filtro?\n1)SI\n2)NO\n>>";
         cin>>opcion;
         if(opcion == 2)
             break;
-        Filtro filtro = new Filtro();
+        Filtro filtro;
         cout<<"Desea filtrar la ip de origen?\n1)SI\n2)NO\n>>";        
         cin>>opcion;        
         if(opcion == 1){
@@ -85,7 +85,7 @@ vector<Filtro> especificarFiltros(){
         cout<<"Desea filtrar la aplicacion?\n1)SI\n2)NO\n>>";        
         cin>>opcion;        
         if(opcion == 1){
-            cout<<"Aplicaciones disponibles:\n1. HTTP\n2. DNS\n3. DHCP\n 4. ARP"
+            cout<<"Aplicaciones disponibles:\n1. HTTP\n2. DNS\n3. DHCP\n 4. ARP";
             cout<<"Ingrese el numero de aplicacion: ";
             cin>>intTemp;
             filtro.setAplicacion(intTemp);
@@ -96,10 +96,9 @@ vector<Filtro> especificarFiltros(){
 }
 int main(void){
     pcap_if_t *interface;
-    Vector<Filtro> filtros;
+    vector<Filtro> filtros;
     string archivoGuardado;
 
     interface = seleccionarInterface();
-    filtros = especificarFiltros();
-    archivoGuardado = 
+    filtros = especificarFiltros();    
 }
