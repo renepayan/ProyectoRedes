@@ -4,6 +4,6 @@
 class Util{
     public:
         static std::string intToHexString(int valor);
-        static std::string Util::intToIpAddress(unsigned int valor);
+        static std::string intToIpAddress(unsigned int valor);
 };
 #endif
