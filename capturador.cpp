@@ -40,10 +40,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     std::cout<<"Direccion mac de destino: "<<macDestino<<'\n';     
     std::cout<<eth_header->ether_type<<'\n';
     return;
-    //se distingue si es un paquete IP (UDP y TCP) o ARP o Reverse ARP
-    switch(eth_header->ether_type){
-        case ETHERTYPE_IP
-    }
+    //se distingue si es un paquete IP (UDP y TCP) o ARP o Reverse ARP    
 
     if (ntohs(eth_header->ether_type) != ETHERTYPE_IP) {
         printf("Not an IP packet. Skipping...\n\n");
