@@ -38,7 +38,7 @@ void Capturador::iniciarCaptura(){
         }    
         print_packet_info(packet, packet_header);
     }
-    catch () {
+    catch (...) {
         std::cout<<"se murio\n";
     }  
       
