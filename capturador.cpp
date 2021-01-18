@@ -33,7 +33,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     nlohmann::json paqueteAGuardar;
     std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
     std::cout<<"Paquete recibido\n";    
-    std::cout<<Util::dataToHex(packet_body)<<'\n'
+    std::cout<<Util::dataToHex(packet_body)<<'\n';
     struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet_body;
     std::string macOrigen, macDestino;
