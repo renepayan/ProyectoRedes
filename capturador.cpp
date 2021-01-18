@@ -30,8 +30,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         printf("Not an IP packet. Skipping...\n\n");
         return;
     }    
-    printf("Total packet available: %d bytes\n", header->caplen);
-    printf("Expected packet size: %d bytes\n", header->len);
+    printf("Total packet available: %d bytes\n", packet_header->caplen);
+    printf("Expected packet size: %d bytes\n", packet_header->len);
     const u_char *ip_header;
     const u_char *tcp_header;
     const u_char *payload;
@@ -57,7 +57,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     printf("Size of all headers combined: %d bytes\n", total_headers_size);
     payload_length = header->caplen -(ethernet_header_length + ip_header_length + tcp_header_length);
     printf("Payload size: %d bytes\n", payload_length);
-    payload = packet + total_headers_size;
+    payload = packet_body + total_headers_size;
     printf("Memory address where payload begins: %p\n\n", payload);
     
     if (payload_length > 0) {
