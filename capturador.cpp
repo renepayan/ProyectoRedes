@@ -116,7 +116,7 @@ std::string Capturador::toString(){
     readlink(path, result, sizeof(result)-1);
     tmp="Archivo de salida: ";
     retorno+=tmp+result+'\n';
-    retorno+="Nivel de verbosidad: "+std::to_string(this->nivelVerbosidad); 
+    retorno+="Nivel de verbosidad: "+std::to_string(this->nivelVerbosidad)+'\n'; 
     retorno+="Red: "+this->obtenerRed()+'\n';
     retorno+="Mascara de red: "+this->obtenerMascaraDeRed();
 	return retorno;

@@ -30,5 +30,11 @@ void Filtro::setIpDestino(std::string ipDestino){
 }
 
 std::string Filtro::toString(){
-    
+    std::string retorno = "";
+    retorno+="Aplicacion: "+to_string(aplicacion)+'\n';
+    retorno+="Puerto de origen: "+to_string(puertoOrigen)+'\n';
+    retorno+="Puerto de destino: "+to_string(puertoDestino)+'\n';
+    retorno+="Ip de Origen: "+ipOrigen+'\n';
+    retorno+="Ip de Destino: "+ipDestino+'\n';
+    return retorno;
 }
