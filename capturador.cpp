@@ -38,7 +38,7 @@ void Capturador::iniciarCaptura(){
             error_buffer
         );
         if (handle == NULL) {
-            fprintf(stderr, "Could not open device %s: %s\n", device, error_buffer);
+            fprintf(stderr, "Could not open device %s: %s\n", this->interface->name, error_buffer);
             return 2;
         }
         pcap_loop(handle, 0, this->my_packet_handler, NULL);        
