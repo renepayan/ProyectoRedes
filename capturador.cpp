@@ -107,7 +107,7 @@ std::string Capturador::toString(){
     retorno+=tmp+this->interface->name+'\n';        
     retorno+="Filtros disponibles:\n ";
     if(this->filtros.size() == 0){
-        retorno+="----No hay filtros disponibles----\n"
+        retorno+="----No hay filtros disponibles----\n";
     }
     for(int i = 0; i < this->filtros.size(); i++){
         retorno+=std::to_string(i)+") "+filtros[i].toString()+'\n';
