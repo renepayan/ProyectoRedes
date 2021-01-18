@@ -68,11 +68,11 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
 			break;
 		    case 17:{
     			    std::cout<<"Es un paquete UDP\n";
-			        struct tcphdr *udphxD = (struct udphdr*)(packet_body+14+(int)(iph->ihl*4));
+			        struct udphdr *udphxD = (struct udphdr*)(packet_body+14+(int)(iph->ihl*4));
                     std::cout<<"Puerto de origen: "<<ntohs(udphxD->src)<<'\n';
                     std::cout<<"Puerto de destino: "<<ntohs(udphxD->dest)<<'\n';                    
                     std::cout<<"Checksum: "<<udphxD->checksum<<'\n';
-                    std::cout<<"Tamano del paquete: "<udphxD->len<<'\n';  
+                    std::cout<<"Tamano del paquete: "<<udphxD->len<<'\n';  
                 }
 			break;
         }
