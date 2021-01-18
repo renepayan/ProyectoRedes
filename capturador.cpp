@@ -31,7 +31,7 @@ void Capturador::iniciarCaptura(){
     struct pcap_pkthdr packet_header;   
     try {
          handle = pcap_open_live(
-            device,
+            this->interface->name,
             BUFSIZ,
             0,
             10000,
