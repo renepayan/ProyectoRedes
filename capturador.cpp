@@ -49,6 +49,29 @@ void Capturador::detenerCaptura(){
     fclose(archivoSalida);
     this->capturaActiva = false;
 }        
+std::string Capturador::obtenerDireccionIP(){
+    char *net;    
+    int ret;
+    char errbuf[PCAP_ERRBUF_SIZE];
+    bpf_u_int32 netp;   
+    bpf_u_int32 maskp; 
+    struct in_addr addr;    
+
+    ret = pcap_lookupnet(dev,&netp,&maskp,errbuf);
+    if(ret == -1){
+        printf("%s\n",errbuf);
+        exit(1);
+    }    
+    addr.s_addr = netp;
+    net = inet_ntoa(addr);
+    if(net == NULL){
+        perror("inet_ntoa");
+        exit(1);
+    }  
+    return ""+net;
+
+
+}
 std::string Capturador::toString(){
     std::string retorno = "";
     char path[1024];
