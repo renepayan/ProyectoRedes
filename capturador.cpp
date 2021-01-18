@@ -53,7 +53,7 @@ std::string Capturador::toString(){
     std::string retorno = "";
     char path[1024];
     char result[1024];
-    retorno+="Dispositivo de red: "+this->interface->name+'\n';        
+    retorno+="Dispositivo de red: "+&(this->interface->name)+'\n';        
     retorno+="Filtros disponibles:\n ";
     for(int i = 0; i <= this->filtros.size(); i++){
         retorno+=itoa(i)+") "+filtros[i]->toString()+'\n';
@@ -63,6 +63,6 @@ std::string Capturador::toString(){
     memset(result, 0, sizeof(result));
     readlink(path, result, sizeof(result)-1);
     retorno+="Archivo de salida: "+result+'\n';
-    retorno+="Nivel de verbosidad: "+this->nivelVerbosidad; 
+    retorno+="Nivel de verbosidad: "+std::to_string(this->nivelVerbosidad); 
 	return retorno;
 }
