@@ -49,15 +49,14 @@ void Capturador::detenerCaptura(){
     this->capturaActiva = false;
 }        
 std::string Capturador::obtenerRed(){
-    char *net;    
-    char *dev;
+    char *net;        
     int ret;
     char errbuf[PCAP_ERRBUF_SIZE];
     bpf_u_int32 netp;   
     bpf_u_int32 maskp; 
     struct in_addr addr;    
 
-    ret = pcap_lookupnet(dev,&netp,&maskp,errbuf);
+    ret = pcap_lookupnet(this->interface->name,&netp,&maskp,errbuf);
     if(ret == -1){
         printf("%s\n",errbuf);
         exit(1);
@@ -72,15 +71,14 @@ std::string Capturador::obtenerRed(){
 }
 std::string Capturador::obtenerMascaraDeRed(){
     char *net;    
-    char *mask;
-    char *dev;
+    char *mask;    
     int ret;
     char errbuf[PCAP_ERRBUF_SIZE];
     bpf_u_int32 netp;   
     bpf_u_int32 maskp; 
     struct in_addr addr;    
 
-    ret = pcap_lookupnet(dev,&netp,&maskp,errbuf);
+    ret = pcap_lookupnet(this->interface->name,&netp,&maskp,errbuf);
     if(ret == -1){
         printf("%s\n",errbuf);
         exit(1);
