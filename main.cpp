@@ -97,7 +97,9 @@ vector<Filtro> especificarFiltros(){
 int main(void){
     pcap_if_t *interface;
     Vector<Filtro> filtros;
+    string archivoGuardado;
+
     interface = seleccionarInterface();
     filtros = especificarFiltros();
-
+    archivoGuardado = 
 }
