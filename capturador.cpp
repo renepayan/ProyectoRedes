@@ -55,8 +55,9 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
 			    
 			break;
 		    case 6:{  //TCP Protocol
-                    std::cout<<iph->ip_hl<<" Es un paquete TCP\n";                 
-                    struct tcphdr *tcphxD = (struct tcphdr*)(iph+iph->ip_hl);
+                    std::cout<<iph->ihl<<" Es un paquete TCP\n";     
+                    std::cout<<sizeof(struct iphdr)<<" Es un paquete TCP\n";                
+                    struct tcphdr *tcphxD = (struct tcphdr*)(iph+sizeof(struct iphdr));
                     std::cout<<"Puerto de origen: "<<tcphxD->source<<'\n';
                     std::cout<<"Puerto de destino: "<<tcphxD->dest<<'\n';
                     std::cout<<"Numero de secuencia: "<<tcphxD->seq<<'\n';
