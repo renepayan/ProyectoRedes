@@ -14,8 +14,7 @@ Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *a
 bool Capturador::ValidarFiltros(){
 	return true;
 }
-void Capturador::print_packet_info(const u_char *packet, struct pcap_pkthdr packet_header) {
-    std::cout<<*packet<<'\n';
+void Capturador::print_packet_info(const u_char *packet, struct pcap_pkthdr packet_header) {    
     printf("Packet capture length: %d\n", packet_header.caplen);
     printf("Packet total length %d\n", packet_header.len);
 }
@@ -23,20 +22,27 @@ void Capturador::iniciarCaptura(){
     pcap_t *handle;
     char error_buffer[PCAP_ERRBUF_SIZE];
     const u_char *packet;
-    struct pcap_pkthdr packet_header;    
-    handle = pcap_open_live(
-        this->interface->name,
-        BUFSIZ,
-        1,
-        10000,
-        error_buffer
-    );    
-    packet = pcap_next(handle, &packet_header);    
-    if (packet == NULL) {
-        perror("No packet found.\n");
-        exit(0);
-    }    
-    print_packet_info(packet, packet_header);
+    struct pcap_pkthdr packet_header;   
+    try {
+        handle = pcap_open_live(
+            this->interface->name,
+            BUFSIZ,
+            1,
+            10000,
+            error_buffer
+        );  
+        packet = pcap_next(handle, &packet_header);    
+        if (packet == NULL) {
+            perror("No packet found.\n");
+            exit(0);
+        }    
+        print_packet_info(packet, packet_header);
+    }
+    catch () {
+        std::cout<<"se murio\n";
+    }  
+      
+    
 
 }
 void Capturador::detenerCaptura(){
