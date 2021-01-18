@@ -87,7 +87,8 @@ std::string Capturador::toString(){
     sprintf(path, "/proc/self/fd/%d", fd);
     memset(result, 0, sizeof(result));
     readlink(path, result, sizeof(result)-1);
-    retorno+="Archivo de salida: "+result+'\n';
+    tmp="Archivo de salida: ";
+    retorno+=tmp+result+'\n';
     retorno+="Nivel de verbosidad: "+std::to_string(this->nivelVerbosidad); 
 	return retorno;
 }
