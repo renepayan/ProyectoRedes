@@ -11,21 +11,24 @@
 #include <linux/igmp.h>
 #include <linux/if_arp.h>
 #include "util.hpp"
+#include "json.hpp"
 #include "capturador.hpp"
 
 Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *archivoSalida, int nivelVerbosidad){
     this->interface = interface;    
     this->filtros = filtros;
-    this->archivoSalida = archivoSalida;
+    Capturador::archivoSalida = archivoSalida;
     this->nivelVerbosidad = nivelVerbosidad;
     this->capturaActiva = false;    
     this->idCaptura = 0;
+    Capturador::primerPaquete = false;
 }
 
 bool Capturador::ValidarFiltros(){
 	return true;
 }
-void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){
+void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){    
+    json paqueteAGuardar;
     std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
     std::cout<<"Paquete recibido\n";
     struct ether_header *eth_header;
@@ -39,7 +42,9 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
             macDestino+=':';
         }
     }
+    paqueteAGuardar["macOrigen"] = macOrigen;
     std::cout<<"    Direccion mac de origen: "<<macOrigen<<'\n';     
+    paqueteAGuardar["macDestino"] = macDestino;
     std::cout<<"    Direccion mac de destino: "<<macDestino<<'\n';         
     if(ntohs(eth_header->ether_type) == 0x0800){
         std::cout<<"    Es un paquete IP\n";
@@ -95,10 +100,17 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     }else if(ntohs(eth_header->ether_type) == 0x8035){
         std::cout<<"    Es un paquete ARP reverso\n";
     }       
+    if(!Capturador::primerPaquete){
+        fwrite(Capturador::archivoSalida, ",%s",paqueteAGuardar.dump()));
+    }else{
+        Capturador::primerPaquete = false;
+        fwrite(Capturador::archivoSalida, "%s",paqueteAGuardar.dump());
+    }
     std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
     return;
 }
 void Capturador::iniciarCaptura(){
+    fwrite(Capturador::archivoSalida, "{\"Paquetes\":[");
     pcap_t *handle;
     char error_buffer[PCAP_ERRBUF_SIZE];
     const u_char *packet;
@@ -122,7 +134,7 @@ void Capturador::iniciarCaptura(){
     }  
 }
 void Capturador::detenerCaptura(){
-    fclose(archivoSalida);
+    fclose(Capturador::archivoSalida);
     this->capturaActiva = false;
 }        
 std::string Capturador::obtenerRed(){

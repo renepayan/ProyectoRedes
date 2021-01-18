@@ -3,17 +3,18 @@
 
 #include <bits/stdc++.h>
 #include <pcap.h>
-
+#include "json.hpp"
 #include "filtro.hpp"
 
 class Capturador{
     private:
         pcap_if_t *interface;
         std::vector<Filtro>filtros;
-        FILE *archivoSalida;
+        static FILE *archivoSalida;
         bool capturaActiva;
         int nivelVerbosidad;
-        long long int idCaptura;
+        long long int idCaptura;        
+        static bool primerPaquete;
     public:
         Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *archivoSalida, int nivelVerbosidad);
         bool ValidarFiltros();
