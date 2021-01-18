@@ -125,4 +125,5 @@ int main(void){
     Capturador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);
 
     cout<<capturador.toString()<<'\n';
+    capturador.iniciarCaptura();
 }

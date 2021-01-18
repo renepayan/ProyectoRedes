@@ -41,6 +41,7 @@ void Capturador::iniciarCaptura(){
 }
 void Capturador::detenerCaptura(){
     fclose(archivoSalida);
+    this->capturaActiva = false;
 }        
 std::string Capturador::toString(){
     //Aqui se imprimen los detalles
