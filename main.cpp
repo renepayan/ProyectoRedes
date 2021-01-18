@@ -114,9 +114,9 @@ int especificarNivelVerbosidad(){
     return nivel;    
 }
 
-void my_handler(sig_t s){
-    capturador.detenerCaptura();
-
+void my_handler(sig_atomic_t s)
+    std::cout<<"Cerrando captura\n";
+    fclose(Capturador::archivoSalida);
 }
 
 int main(void){
@@ -131,7 +131,7 @@ int main(void){
     archivoGuardado = especificarArchivo();
     //nivelVerbosidad = especificarNivelVerbosidad();
 
-    static Capturador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);    
+    Capturador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);    
     cout<<capturador.toString()<<'\n';
     capturador.iniciarCaptura();
 }
