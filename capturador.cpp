@@ -139,6 +139,7 @@ void Capturador::iniciarCaptura(){
     }  
 }
 void Capturador::detenerCaptura(){
+    cout<<"Cerrando captura\n";
     fclose(Capturador::archivoSalida);
     this->capturaActiva = false;
 }        

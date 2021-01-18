@@ -4,7 +4,9 @@
 #include "filtro.hpp"
 
 #include "pcap.h"
-
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define HAVE_REMOTE
 
@@ -112,7 +114,13 @@ int especificarNivelVerbosidad(){
     return nivel;    
 }
 
+void my_handler(sig_t s){
+    capturador.detenerCaptura();
+
+}
+
 int main(void){
+    signal (SIGINT,my_handler);
     pcap_if_t *interface;
     vector<Filtro> filtros;    
     FILE *archivoGuardado;
@@ -123,7 +131,7 @@ int main(void){
     archivoGuardado = especificarArchivo();
     //nivelVerbosidad = especificarNivelVerbosidad();
 
-    Capturador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);    
+    static Capturador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);    
     cout<<capturador.toString()<<'\n';
     capturador.iniciarCaptura();
 }
