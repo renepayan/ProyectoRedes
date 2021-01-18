@@ -20,25 +20,28 @@ void Capturador::print_packet_info(const u_char *packet, struct pcap_pkthdr pack
     printf("Packet capture length: %d\n", packet_header.caplen);
     printf("Packet total length %d\n", packet_header.len);
 }
+void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){
+    print_packet_info(packet_body, *packet_header);
+    return;
+}
 void Capturador::iniciarCaptura(){
     pcap_t *handle;
     char error_buffer[PCAP_ERRBUF_SIZE];
     const u_char *packet;
     struct pcap_pkthdr packet_header;   
     try {
-        handle = pcap_open_live(
-            this->interface->name,
+         handle = pcap_open_live(
+            device,
             BUFSIZ,
-            1,
+            0,
             10000,
             error_buffer
-        );  
-        packet = pcap_next(handle, &packet_header);    
-        if (packet == NULL) {
-            perror("No packet found.\n");
-            exit(0);
-        }    
-        print_packet_info(packet, packet_header);
+        );
+        if (handle == NULL) {
+            fprintf(stderr, "Could not open device %s: %s\n", device, error_buffer);
+            return 2;
+        }
+        pcap_loop(handle, 0, this->my_packet_handler, NULL);        
     }
     catch (...) {
         std::cout<<"se murio\n";
