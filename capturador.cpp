@@ -39,8 +39,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         macOrigen += Util::intToHexString((int)*temp_pointer);
         temp_pointer++;
     }
-    std::cout<<"Direccion mac de origen: "<<macOrigen;     
-    std::cout<<"Direccion mac de destino: "<<macDestino;     
+    std::cout<<"Direccion mac de origen: "<<macOrigen<<'\n';     
+    std::cout<<"Direccion mac de destino: "<<macDestino<<'\n';     
 
     if (ntohs(eth_header->ether_type) != ETHERTYPE_IP) {
         printf("Not an IP packet. Skipping...\n\n");
