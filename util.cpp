@@ -18,3 +18,10 @@ std::string Util::intToIpAddress(uint32_t ip){
     retorno = inet_ntoa(ip_addr);
     return retorno;
 }
+std::string Util::dataToHex(unsigned char *data){
+    std::string retrono;
+    for (unsigned char c = *data; c; c=*++data) {
+        retorno+=Util::intToHexString((int)c);
+    }
+    return retorno;
+}

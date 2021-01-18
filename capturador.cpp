@@ -57,7 +57,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Numero de secuencia: "<<icmpXD->un.echo.sequence<<'\n';                    
                     std::cout<<"                Puerta de enlace: "<<Util::intToIpAddress(icmpXD->un.gateway)<<'\n';                    
                     std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';                    
-                    std::cout<<"                Tamanio del paquete: "<<icmpXD->length<<'\n';
+                    std::cout<<"                Tamanio del paquete: "<<icmpXD->len<<'\n';
+                    std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
                 }
 			break;
 		    case 2:{
