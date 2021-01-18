@@ -90,15 +90,40 @@ vector<Filtro> especificarFiltros(){
             cin>>intTemp;
             filtro.setAplicacion(intTemp);
         }
-        filtros.push_back(filtro);
+        filtros.push_back(filtro);`
+        cout<<"Filtro agregado!!!!\n";
     }
     return filtros;
 }
+
+FILE *especificarArchivo(){
+    char[255] ruta;
+    FILE *archivo;
+    cout<<"Ingrese la ruta del archivo dump: ";
+    cin>>ruta;
+    archivo = fopen(archivo, "w");
+    return archivo;
+}
+
+int especificarNivelVerbosidad(){
+    int nivel;
+    cout<<"Que nivel de verbosidad se va a ocupar:\n 0. No se muestra nada en consola\n1. Solo se muestra la informacion general del paquete\n2. Muestra informacion del paquete y protocolo (TCP, UDP)\n3. Muestra toda la informacion disponible\n>>"
+    cin>>nivel;
+    return nivel;    
+}
+
 int main(void){
     pcap_if_t *interface;
-    vector<Filtro> filtros;
-    string archivoGuardado;
+    vector<Filtro> filtros;    
+    FILE *archivoGuardado;
+    int nivelVerbosidad;
 
     interface = seleccionarInterface();
     filtros = especificarFiltros();    
+    archivoGuardado = especificarArchivo();
+    nivelVerbosidad = especificarNivelVerbosidad();
+
+    Captrurador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);
+
+    cout<<capturador->toString()<<'\n';
 }
