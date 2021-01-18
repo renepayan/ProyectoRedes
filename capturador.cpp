@@ -14,6 +14,8 @@
 #include "json.hpp"
 #include "capturador.hpp"
 
+static FILE* Capturador::archivoSalida = nullptr;
+static bool Capturador::primerPaquete = false;
 Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *archivoSalida, int nivelVerbosidad){
     this->interface = interface;    
     this->filtros = filtros;
