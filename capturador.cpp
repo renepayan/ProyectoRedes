@@ -23,11 +23,9 @@ Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *a
 bool Capturador::ValidarFiltros(){
 	return true;
 }
-void Capturador::print_packet_info(const u_char *packet, struct pcap_pkthdr packet_header) {    
-    printf("Packet capture length: %d\n", packet_header.caplen);
-    printf("Packet total length %d\n", packet_header.len);
-}
 void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){
+    std::cout<<"--------------------------------------------------------------------------------------------------------------";
+    std::cout<<"Paquete recibido";
     struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet_body;
     std::string macOrigen, macDestino;
@@ -39,14 +37,14 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
             macDestino+=':';
         }
     }
-    std::cout<<"Direccion mac de origen: "<<macOrigen<<'\n';     
-    std::cout<<"Direccion mac de destino: "<<macDestino<<'\n';         
+    std::cout<<"    Direccion mac de origen: "<<macOrigen<<'\n';     
+    std::cout<<"    Direccion mac de destino: "<<macDestino<<'\n';         
     if(ntohs(eth_header->ether_type) == 0x0800){
-        std::cout<<"Es un paquete IP\n";
+        std::cout<<"    Es un paquete IP\n";
         struct iphdr *iph = (struct iphdr*)(packet_body+14);
-        std::cout<<"Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
-        std::cout<<"Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
-        std::cout<<"Tamano del paquete: "<<iph->tot_len<<'\n';                    
+        std::cout<<"        Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
+        std::cout<<"        Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
+        std::cout<<"        Tamano del paquete: "<<iph->tot_len<<'\n';                    
         switch (iph->protocol){
 		    case 1:  //ICMP Protocol
                 //Aqui va el IMCP
@@ -56,31 +54,32 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
 			    
 			break;
 		    case 6:{  //TCP Protocol
-                    std::cout<<"Es un paquete TCP\n";                 
+                    std::cout<<"            Es un paquete TCP\n";                 
                     struct tcphdr *tcphxD = (struct tcphdr*)(packet_body+14+(int)(iph->ihl*4));
-                    std::cout<<"Puerto de origen: "<<ntohs(tcphxD->source)<<'\n';
-                    std::cout<<"Puerto de destino: "<<ntohs(tcphxD->dest)<<'\n';                    
-                    std::cout<<"Numero de secuencia: "<<tcphxD->seq<<'\n';
-                    std::cout<<"Numero de secuencia del ACK: "<<tcphxD->ack_seq<<'\n';
-                    std::cout<<"Checksum: "<<tcphxD->check<<'\n';
-                    std::cout<<"Ventana: "<<tcphxD->window<<'\n';                    
+                    std::cout<<"                Puerto de origen: "<<ntohs(tcphxD->source)<<'\n';
+                    std::cout<<"                Puerto de destino: "<<ntohs(tcphxD->dest)<<'\n';                    
+                    std::cout<<"                Numero de secuencia: "<<tcphxD->seq<<'\n';
+                    std::cout<<"                Numero de secuencia del ACK: "<<tcphxD->ack_seq<<'\n';
+                    std::cout<<"                Checksum: "<<tcphxD->check<<'\n';
+                    std::cout<<"                Ventana: "<<tcphxD->window<<'\n';                    
                 }
 			break;
 		    case 17:{
-    			    std::cout<<"Es un paquete UDP\n";
+    			    std::cout<<"            Es un paquete UDP\n";
 			        struct udphdr *udphxD = (struct udphdr*)(packet_body+14+(int)(iph->ihl*4));
-                    std::cout<<"Puerto de origen: "<<ntohs(udphxD->source)<<'\n';
-                    std::cout<<"Puerto de destino: "<<ntohs(udphxD->dest)<<'\n';                    
-                    std::cout<<"Checksum: "<<udphxD->check<<'\n';
-                    std::cout<<"Tamano del paquete: "<<udphxD->len<<'\n';  
+                    std::cout<<"                Puerto de origen: "<<ntohs(udphxD->source)<<'\n';
+                    std::cout<<"                Puerto de destino: "<<ntohs(udphxD->dest)<<'\n';                    
+                    std::cout<<"                Checksum: "<<udphxD->check<<'\n';
+                    std::cout<<"                Tamano del paquete: "<<udphxD->len<<'\n';  
                 }
 			break;
         }
     }else if(ntohs(eth_header->ether_type) == 0x0806){
-        std::cout<<"Es un paquete ARP\n";
+        std::cout<<"    Es un paquete ARP\n";
     }else if(ntohs(eth_header->ether_type) == 0x8035){
-        std::cout<<"Es un paquete ARP reverso\n";
+        std::cout<<"    Es un paquete ARP reverso\n";
     }       
+    std::cout<<"--------------------------------------------------------------------------------------------------------------";
     return;
 }
 void Capturador::iniciarCaptura(){
