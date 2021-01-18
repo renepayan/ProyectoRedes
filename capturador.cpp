@@ -4,8 +4,7 @@
 #include "capturador.hpp"
 
 Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *archivoSalida, int nivelVerbosidad){
-    this->interface = interface;
-    std::cout<<interface->name;
+    this->interface = interface;    
     this->filtros = filtros;
     this->archivoSalida = archivoSalida;
     this->nivelVerbosidad = nivelVerbosidad;
@@ -23,23 +22,19 @@ void Capturador::iniciarCaptura(){
     pcap_t *handle;
     char error_buffer[PCAP_ERRBUF_SIZE];
     const u_char *packet;
-    struct pcap_pkthdr packet_header;
-    std::cout<<"la interface es: "<<this->interface->name<<'\n';
+    struct pcap_pkthdr packet_header;    
     handle = pcap_open_live(
         this->interface->name,
         BUFSIZ,
         1,
         10000,
         error_buffer
-    );
-    std::cout<<"creo el handle\n";
-    packet = pcap_next(handle, &packet_header);
-    std::cout<<"capturo el paquete\n";
+    );    
+    packet = pcap_next(handle, &packet_header);    
     if (packet == NULL) {
         perror("No packet found.\n");
         exit(0);
-    }
-    std::cout<<"va a imprimir info\n";
+    }    
     print_packet_info(packet, packet_header);
 
 }

@@ -38,8 +38,7 @@ pcap_if_t *seleccionarInterface(){
     d = alldevs;
     for(i = 0; i <n; i++){        
         d->next;
-    }
-    cout<<"El escogido es: "<<d->name<<'\n';
+    }    
     return d;
 }
 vector<Filtro> especificarFiltros(){
@@ -108,7 +107,7 @@ FILE *especificarArchivo(){
 
 int especificarNivelVerbosidad(){
     int nivel;
-    cout<<"Que nivel de verbosidad se va a ocupar:\n 0. No se muestra nada en consola\n1. Solo se muestra la informacion general del paquete\n2. Muestra informacion del paquete y protocolo (TCP, UDP)\n3. Muestra toda la informacion disponible\n>>";
+    cout<<"Que nivel de verbosidad se va a ocupar:\n0. No se muestra nada en consola\n1. Solo se muestra la informacion general del paquete\n2. Muestra informacion del paquete y protocolo (TCP, UDP)\n3. Muestra toda la informacion disponible\n>>";
     cin>>nivel;
     return nivel;    
 }
