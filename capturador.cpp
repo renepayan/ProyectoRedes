@@ -43,7 +43,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     std::cout<<"Direccion mac de destino: "<<macDestino<<'\n';         
     if(ntohs(eth_header->ether_type) == 0x0800){
         std::cout<<"Es un paquete IP\n";
-        struct iphdr *iph = (struct iphdr*)(packet_body+iph->ihl);
+        struct iphdr *iph = (struct iphdr*)(packet_body+14);
         std::cout<<"Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
         std::cout<<"Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
         switch (iph->protocol){
@@ -56,7 +56,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
 			break;
 		    case 6:{  //TCP Protocol
                     std::cout<<"Es un paquete TCP\n";
-                    struct tcphdr *tcphxD = (struct tcphdr*)(iph+32);
+                    struct tcphdr *tcphxD = (struct tcphdr*)(iph+iph->ihl);
                     std::cout<<"Puerto de origen: "<<tcphxD->source<<'\n';
                     std::cout<<"Puerto de destino: "<<tcphxD->dest<<'\n';
                     std::cout<<"Numero de secuencia: "<<tcphxD->seq<<'\n';
