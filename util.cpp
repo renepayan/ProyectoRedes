@@ -11,7 +11,7 @@ std::string Util::intToHexString(int valor){
     }
     return retorno;
 }
-std::string Util::intToIpAddress(unsigned int valor){
+std::string Util::intToIpAddress(unsigned int ip){
     std::string retorno;
     unsigned char bytes[4];
     bytes[0] = ip & 0xFF;
