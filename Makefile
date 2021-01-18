@@ -1,6 +1,6 @@
 PROYECTO=proyecto_redes
 DESTDIR=/usr/local/bin
-CFLAGS=-Wall -std=c++14
+CFLAGS=-Wall -std=c++14 -g3
 LDFLAGS=-lm -lpcap -lpthread
 CC=g++
 SRCS=$(wildcard *.cpp)

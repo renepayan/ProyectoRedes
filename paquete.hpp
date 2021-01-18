@@ -13,6 +13,8 @@ private:
     time_t fechaCaptura;
     std::string ipOrigen;
     std::string ipDestino;
+    std::string macOrigen;
+    std::string macDestino;
     int puertoOrigen;
     int puertoDestino;
     std::string checksum;

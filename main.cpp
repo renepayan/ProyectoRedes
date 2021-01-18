@@ -10,7 +10,6 @@
 
 
 using namespace std;
-Capturador capturador;
 pcap_if_t *seleccionarInterface(){
     cout<<"Seleccion de dispositivo\n";
     char errbuf[PCAP_ERRBUF_SIZE];
@@ -31,27 +30,100 @@ pcap_if_t *seleccionarInterface(){
         cout<<"Ingrese el numero de la interface a utilizar: "; 
         cin>>n;
         if(n>=i){
-            cout<<"Numero de interface invalida\n";
+            cout<<"Numero de interfaz invalida\n";
         }else{
             break;
         }
     }
+    d = alldevs;
     for(i = 0; i <n; i++){        
         d->next;
-    }
+    }    
     return d;
 }
-Filtro *especificarFiltros(){
+vector<Filtro> especificarFiltros(){
+    vector<Filtro> filtros;
+    string strTemp;
+    int intTemp, opcion;
     cout<<"Especificar filtros:\n";
-    while(true){
-        
+    while(true){        
+        cout<<"Desea agregar un filtro?\n1)SI\n2)NO\n>>";
+        cin>>opcion;
+        if(opcion == 2)
+            break;
+        Filtro filtro;
+        cout<<"Desea filtrar la ip de origen?\n1)SI\n2)NO\n>>";        
+        cin>>opcion;        
+        if(opcion == 1){
+            cout<<"Ingrese la ip de origen: ";
+            cin>>strTemp;
+            filtro.setIpOrigen(strTemp);
+        }
+        cout<<"Desea filtrar la ip de destino?\n1)SI\n2)NO\n>>";        
+        cin>>opcion;        
+        if(opcion == 1){
+            cout<<"Ingrese la ip de destino: ";
+            cin>>strTemp;
+            filtro.setIpDestino(strTemp);
+        }
+        cout<<"Desea filtrar el puerto de origen?\n1)SI\n2)NO\n>>";        
+        cin>>opcion;        
+        if(opcion == 1){
+            cout<<"Ingrese el puerto de origen: ";
+            cin>>intTemp;
+            filtro.setPuertoOrigen(intTemp);
+        }
+        filtros.push_back(filtro);
+        cout<<"Desea filtrar el puerto de destino?\n1)SI\n2)NO\n>>";        
+        cin>>opcion;        
+        if(opcion == 1){
+            cout<<"Ingrese el puerto de destino: ";
+            cin>>intTemp;
+            filtro.setPuertoDestino(intTemp);
+        }
+        filtros.push_back(filtro);
+        cout<<"Desea filtrar la aplicacion?\n1)SI\n2)NO\n>>";        
+        cin>>opcion;        
+        if(opcion == 1){
+            cout<<"Aplicaciones disponibles:\n1. HTTP\n2. DNS\n3. DHCP\n 4. ARP";
+            cout<<"Ingrese el numero de aplicacion: ";
+            cin>>intTemp;
+            filtro.setAplicacion(intTemp);
+        }
+        filtros.push_back(filtro);
+        cout<<"Filtro agregado!!!!\n";
     }
-
+    return filtros;
 }
+
+FILE *especificarArchivo(){
+    char ruta[255];
+    FILE *archivo;
+    cout<<"Ingrese la ruta del archivo dump: ";
+    cin>>ruta;
+    archivo = fopen(ruta, "w");
+    return archivo;
+}
+
+int especificarNivelVerbosidad(){
+    int nivel;
+    cout<<"Que nivel de verbosidad se va a ocupar:\n0. No se muestra nada en consola\n1. Solo se muestra la informacion general del paquete\n2. Muestra informacion del paquete y protocolo (TCP, UDP)\n3. Muestra toda la informacion disponible\n>>";
+    cin>>nivel;
+    return nivel;    
+}
+
 int main(void){
     pcap_if_t *interface;
-    Filtro *filtros;
-    interface = seleccionarInterface();
-    filtros = especificarFiltros();
+    vector<Filtro> filtros;    
+    FILE *archivoGuardado;
+    int nivelVerbosidad;
 
+    interface = seleccionarInterface();
+    filtros = especificarFiltros();    
+    archivoGuardado = especificarArchivo();
+    nivelVerbosidad = especificarNivelVerbosidad();
+
+    Capturador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);    
+    cout<<capturador.toString()<<'\n';
+    capturador.iniciarCaptura();
 }
