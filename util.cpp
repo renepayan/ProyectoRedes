@@ -6,5 +6,9 @@ std::string Util::intToHexString(int valor){
     std::cout<<valor<<" ";
     std::stringstream stream;
     stream << std::hex << valor;
-    return stream.str();
+    std::string retorno = stream.str();
+    if(retorno.length()<0){
+        retorno = '0'+retorno;
+    }
+    return retorno;
 }
