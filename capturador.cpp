@@ -55,7 +55,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
 			    
 			break;
 		    case 6:  //TCP Protocol
-                cout<<"Es un paquete TCP\n";
+                std::cout<<"Es un paquete TCP\n";
     			struct tcphdr *tcph = (struct tcphdr*)(iphdr+tot_len->tot_len);
                 std::cout<<"Puerto de origen: "<<tcph->source<<'\n';
                 std::cout<<"Puerto de origen: "<<tcph->dest<<'\n';
@@ -64,7 +64,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                 std::cout<<"Ventana: "<<tcph->window<<'\n';
 			break;
 		    case 17: //UDP Protocol
-    			cout<<"Es un paquete UDP\n";
+    			std::cout<<"Es un paquete UDP\n";
 			    
 			break;
     }else if(ntohs(eth_header->ether_type) == 0x0806){
