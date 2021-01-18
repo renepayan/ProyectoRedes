@@ -3,6 +3,8 @@
 
 #include <ctime>
 #include <string>
+#include "json.hpp"
+using json = nlohmann::json;
 class Paquete
 {
 private:
@@ -21,6 +23,24 @@ private:
 
 public:
     Paquete(long long int idCaptura, int tipo, std::string datosRAW, int aplicacion, time_t fechaCaptura, std::string ipOrigen, std::string ipDestino, int puertoOrigen, int puertoDestino, std::string checksum);
+    std::string toJson()
+    {
+        json output = {
+            {"idCaptura", idCaptura},
+            {"tipo", tipo},
+            {"datosRAW", datosRAW},
+            {"aplicacion", aplicacion},
+            {"fechaCaptura", fechaCaptura},
+            {"ipOrigen", ipOrigen},
+            {"ipDestino", ipDestino},
+            {"macOrigen", macOrigen},
+            {"macDestino", macDestino},
+            {"puertoOrigen", puertoOrigen},
+            {"puertoDestino", puertoDestino},
+            {"checksum", checksum},
+        };
+        return output.dump();
+    }
 
     long long int getIdCaptura() { return this->idCaptura; }
 
