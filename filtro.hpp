@@ -23,7 +23,7 @@ class Filtro{
         void setIpOrigen(std::string ipOrigen);
 
         std::string getIpDestino();
-        void setIpOrigen(std::string ipDestino);
+        void setIpDestino(std::string ipDestino);
         
 };
 #endif

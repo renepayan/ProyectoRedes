@@ -4,5 +4,6 @@
 
 class Capturador{
     std::vector<Filtro>filtros;
+    
 };
 #endif
