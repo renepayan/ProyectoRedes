@@ -51,10 +51,10 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
 		    case 1:{
                     std::cout<<"            Es un paquete ICMP\n";
                     struct icmphdr *icmpXD = (struct icmphdr*)(packet_body+14+(int)(iph->ihl*4));
-                    std::cout<<"                Tipo de mensaje: "<<ntohs(icmpXD->type)<<'\n';\
-                    std::cout<<"                Sub tipo de mensaje: "<<ntohs(icmpXD->code)<<'\n';
-                    std::cout<<"                Numero de secuencia: "<<ntohs(icmpXD->un.echo.sequence)<<'\n';                    
-                    std::cout<<"                Puerta de enlace: "<<icmpXD->un.gateway<<'\n';                    
+                    std::cout<<"                Tipo de mensaje: "<<icmpXD->type<<'\n';\
+                    std::cout<<"                Sub tipo de mensaje: "<<icmpXD->code<<'\n';
+                    std::cout<<"                Numero de secuencia: "<<icmpXD->un.echo.sequence<<'\n';                    
+                    std::cout<<"                Puerta de enlace: "<<Util::intToIpAddress(icmpXD->un.gateway)<<'\n';                    
                     std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';                    
                 }
 			break;
