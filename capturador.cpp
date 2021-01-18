@@ -8,7 +8,7 @@
 #include <linux/tcp.h>
 #include <linux/udp.h>
 #include <linux/icmp.h>
-
+#include <linux/igmp.h>
 #include "util.hpp"
 #include "capturador.hpp"
 
@@ -56,7 +56,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Numero de secuencia: "<<icmpXD->un.echo.sequence<<'\n';                    
                     std::cout<<"                Puerta de enlace: "<<Util::intToIpAddress(icmpXD->un.gateway)<<'\n';                    
                     std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';
-                    unsigned char *dataICMP = packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr);         
+                    const unsigned char *dataICMP = packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr);         
                     std::cout<<"                Data: "<<dataICMP<<'\n';
                 }
 			break;
