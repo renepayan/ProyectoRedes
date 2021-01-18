@@ -10,7 +10,6 @@
 
 
 using namespace std;
-Capturador capturador;
 pcap_if_t *seleccionarInterface(){
     cout<<"Seleccion de dispositivo\n";
     char errbuf[PCAP_ERRBUF_SIZE];
@@ -90,24 +89,24 @@ vector<Filtro> especificarFiltros(){
             cin>>intTemp;
             filtro.setAplicacion(intTemp);
         }
-        filtros.push_back(filtro);`
+        filtros.push_back(filtro);
         cout<<"Filtro agregado!!!!\n";
     }
     return filtros;
 }
 
 FILE *especificarArchivo(){
-    char[255] ruta;
+    char ruta[255];
     FILE *archivo;
     cout<<"Ingrese la ruta del archivo dump: ";
     cin>>ruta;
-    archivo = fopen(archivo, "w");
+    archivo = fopen(ruta, "w");
     return archivo;
 }
 
 int especificarNivelVerbosidad(){
     int nivel;
-    cout<<"Que nivel de verbosidad se va a ocupar:\n 0. No se muestra nada en consola\n1. Solo se muestra la informacion general del paquete\n2. Muestra informacion del paquete y protocolo (TCP, UDP)\n3. Muestra toda la informacion disponible\n>>"
+    cout<<"Que nivel de verbosidad se va a ocupar:\n 0. No se muestra nada en consola\n1. Solo se muestra la informacion general del paquete\n2. Muestra informacion del paquete y protocolo (TCP, UDP)\n3. Muestra toda la informacion disponible\n>>";
     cin>>nivel;
     return nivel;    
 }
@@ -123,7 +122,7 @@ int main(void){
     archivoGuardado = especificarArchivo();
     nivelVerbosidad = especificarNivelVerbosidad();
 
-    Captrurador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);
+    Capturador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);
 
-    cout<<capturador->toString()<<'\n';
+    cout<<capturador.toString()<<'\n';
 }
