@@ -12,11 +12,9 @@ std::string Util::intToHexString(int valor){
     return retorno;
 }
 std::string Util::intToIpAddress(uint32_t ip){
-    std::string retorno;
-    
-    uint32_t ip = 2110443574;
+    std::string retorno;        
     struct in_addr ip_addr;
     ip_addr.s_addr = ip;
-    retornp = inet_ntoa(ip_addr);
+    retorno = inet_ntoa(ip_addr);
     return retorno;
 }
