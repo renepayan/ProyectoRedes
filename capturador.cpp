@@ -5,6 +5,7 @@
 
 Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *archivoSalida, int nivelVerbosidad){
     this->interface = interface;
+    cout<<interface->name;
     this->filtros = filtros;
     this->archivoSalida = archivoSalida;
     this->nivelVerbosidad = nivelVerbosidad;

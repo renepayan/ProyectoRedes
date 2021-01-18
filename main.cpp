@@ -38,6 +38,7 @@ pcap_if_t *seleccionarInterface(){
     for(i = 0; i <n; i++){        
         d->next;
     }
+    cout<<"El escogido es: "<<d->name<<'\n';
     return d;
 }
 vector<Filtro> especificarFiltros(){
