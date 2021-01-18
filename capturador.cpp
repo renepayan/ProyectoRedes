@@ -55,7 +55,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     printf("TCP header length in bytes: %d\n", tcp_header_length);
     int total_headers_size = ethernet_header_length+ip_header_length+tcp_header_length;
     printf("Size of all headers combined: %d bytes\n", total_headers_size);
-    payload_length = header->caplen -(ethernet_header_length + ip_header_length + tcp_header_length);
+    payload_length = packet_header->caplen -(ethernet_header_length + ip_header_length + tcp_header_length);
     printf("Payload size: %d bytes\n", payload_length);
     payload = packet_body + total_headers_size;
     printf("Memory address where payload begins: %p\n\n", payload);
