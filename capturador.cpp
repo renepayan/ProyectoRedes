@@ -62,12 +62,10 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
 			break;
 		    case 2:{
                     std::cout<<"            Es un paquete IGMP\n";
-                    struct igmphdr *igmphdr = (struct igmphdr*)(packet_body+14+(int)(iph->ihl*4));
-                    std::cout<<"                Tipo de mensaje: "<<icmpXD->type<<'\n';\
-                    std::cout<<"                Sub tipo de mensaje: "<<icmpXD->code<<'\n';
-                    std::cout<<"                Numero de secuencia: "<<icmpXD->un.echo.sequence<<'\n';                    
-                    std::cout<<"                Puerta de enlace: "<<Util::intToIpAddress(icmpXD->un.gateway)<<'\n';                    
-                    std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';                    
+                    struct igmphdr *igmpXD = (struct igmphdr*)(packet_body+14+(int)(iph->ihl*4));
+                    std::cout<<"                Tipo de mensaje: "<<igmpXD->type<<'\n';\
+                    std::cout<<"                Sub tipo de mensaje: "<<igmpXD->code<<'\n';                                        
+                    std::cout<<"                Checksum: "<<igmpXD->csum<<'\n';                    
                 }		    
 			break;
 		    case 6:{  //TCP Protocol
