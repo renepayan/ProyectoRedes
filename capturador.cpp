@@ -24,7 +24,7 @@ void Capturador::iniciarCaptura(){
     char error_buffer[PCAP_ERRBUF_SIZE];
     const u_char *packet;
     struct pcap_pkthdr packet_header;
-    cout<<this->interface->name<<'\n';
+    std::cout<<this->interface->name<<'\n';
     handle = pcap_open_live(
         this->interface->name,
         BUFSIZ,
@@ -32,14 +32,14 @@ void Capturador::iniciarCaptura(){
         10000,
         error_buffer
     );
-    cout<<"creo el handle\n";
+    std::cout<<"creo el handle\n";
     packet = pcap_next(handle, &packet_header);
-    cout<<"capturo el paquete\n";
+    std::cout<<"capturo el paquete\n";
     if (packet == NULL) {
         perror("No packet found.\n");
         exit(0);
     }
-    cout<<"va a imprimir info\n";
+    std::cout<<"va a imprimir info\n";
     print_packet_info(packet, packet_header);
 
 }
