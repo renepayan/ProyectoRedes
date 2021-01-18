@@ -38,7 +38,14 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     }
     std::cout<<"Direccion mac de origen: "<<macOrigen<<'\n';     
     std::cout<<"Direccion mac de destino: "<<macDestino<<'\n';     
-    std::cout<<eth_header->ether_type<<'\n';
+    std::cout<<ntohs(eth_header->ether_type)<<'\n';
+    if(ntohs(eth_header->ether_type) == 0x0800){
+        std::cout<<"Es un paquete IP\n";
+    }else if(ntohs(eth_header->ether_type) == 0x0806){
+        std::cout<<"Es un paquete ARP\n";
+    }else if(ntohs(eth_header->ether_type) == 0x8035){
+        std::cout<<"Es un paquete ARP reverso\n";
+    }
     return;
     //se distingue si es un paquete IP (UDP y TCP) o ARP o Reverse ARP    
 
