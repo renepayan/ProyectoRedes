@@ -49,61 +49,94 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     paqueteAGuardar["macDestino"] = macDestino;
     std::cout<<"    Direccion mac de destino: "<<macDestino<<'\n';         
     if(ntohs(eth_header->ether_type) == 0x0800){
+        paqueteAGuardar["tipo"] = "Paquete IP";
         std::cout<<"    Es un paquete IP\n";
         struct iphdr *iph = (struct iphdr*)(packet_body+14);
+        paqueteAGuardar["ipOrigen"] = Util::intToIpAddress(iph->saddr);        
         std::cout<<"        Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
+        paqueteAGuardar["ipDestino"] = Util::intToIpAddress(iph->daddr);
         std::cout<<"        Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
+        paqueteAGuardar["tamanioPaquete"] = iph->tot_len;
         std::cout<<"        Tamano del paquete: "<<iph->tot_len<<'\n';                    
+        paqueteAGuardar["protocolo"] = (int)iph->protocol;
         std::cout<<"        Protocolo: "<<(int)iph->protocol<<'\n';                    
         switch ((int)iph->protocol){
 		    case 1:{
+                    paqueteAGuardar["tipoIP"] = "Paquete ICMP";
                     std::cout<<"            Es un paquete ICMP\n";
-                    struct icmphdr *icmpXD = (struct icmphdr*)(packet_body+14+(int)(iph->ihl*4));
+                    struct icmphdr *icmpXD = (struct icmphdr*)(packet_body+14+(int)(iph->ihl*4));                    
                     std::cout<<"                Tipo de mensaje: "<<(int)icmpXD->type<<'\n';\
+                    paqueteAGuardar["tipoMensaje"] = (int)icmpXD->type;
                     std::cout<<"                Sub tipo de mensaje: "<<(int)icmpXD->code<<'\n';
+                    paqueteAGuardar["subTipoMensaje"] = (int)icmpXD->code;
                     std::cout<<"                Numero de secuencia: "<<icmpXD->un.echo.sequence<<'\n';                    
+                    paqueteAGuardar["numeroDeSecuencia"] = (int)icmpXD->un.echo.sequence;
                     std::cout<<"                Puerta de enlace: "<<Util::intToIpAddress(icmpXD->un.gateway)<<'\n';                    
+                    paqueteAGuardar["puertaDeEnlace"] = Util::intToIpAddress(icmpXD->un.gateway);
                     std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';                                        
+                    paqueteAGuardar["checksum"] = icmpXD->checksum;
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
                 }
 			break;
 		    case 2:{
                     std::cout<<"            Es un paquete IGMP\n";
                     struct igmphdr *igmpXD = (struct igmphdr*)(packet_body+14+(int)(iph->ihl*4));
-                    std::cout<<"                Tipo de mensaje: "<<igmpXD->type<<'\n';\
+                    std::cout<<"                Tipo de mensaje: "<<igmpXD->type<<'\n';
+                    paqueteAGuardar["tipoMensaje"] = (int)igmpXD->type;
                     std::cout<<"                Sub tipo de mensaje: "<<igmpXD->code<<'\n';                                        
-                    std::cout<<"                Checksum: "<<igmpXD->csum<<'\n';                    
+                    paqueteAGuardar["subTipoMensaje"] = (int)igmpXD->code;
+                    std::cout<<"                Checksum: "<<igmpXD->csum<<'\n';                   
+                    paqueteAGuardar["checksum"] = igmpXD->checksum; 
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(igmphdr))<<'\n';
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
                 }		    
 			break;
 		    case 6:{  //TCP Protocol
                     std::cout<<"            Es un paquete TCP\n";                 
+                    paqueteAGuardar["tipoIP"] = "Paquete TCP";
                     struct tcphdr *tcphxD = (struct tcphdr*)(packet_body+14+(int)(iph->ihl*4));
                     std::cout<<"                Puerto de origen: "<<ntohs(tcphxD->source)<<'\n';
+                    paqueteAGuardar["puertoOrigen"] = ntohs(tcphxD->source);
                     std::cout<<"                Puerto de destino: "<<ntohs(tcphxD->dest)<<'\n';                    
+                    paqueteAGuardar["puertoDestino"] = ntohs(tcphxD->dest);
                     std::cout<<"                Numero de secuencia: "<<tcphxD->seq<<'\n';
+                    paqueteAGuardar["numeroSecuencia"] = (tcphxD->seq);
                     std::cout<<"                Numero de secuencia del ACK: "<<tcphxD->ack_seq<<'\n';
+                    paqueteAGuardar["numeroSecuenciaACK"] = (tcphxD->ack_seq);
                     std::cout<<"                Checksum: "<<tcphxD->check<<'\n';
+                    paqueteAGuardar["checksum"] = (tcphxD->check);
                     std::cout<<"                Ventana: "<<tcphxD->window<<'\n';    
+                    paqueteAGuardar["ventana"] = (tcphxD->window);
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(tcphdr))<<'\n';
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
                 }
 			break;
 		    case 17:{
-    			    std::cout<<"            Es un paquete UDP\n";
-			        struct udphdr *udphxD = (struct udphdr*)(packet_body+14+(int)(iph->ihl*4));
+    			    std::cout<<"            Es un paquete UDP\n";      
+                    paqueteAGuardar["tipoIP"] = "Paquete UDP";              
+			        struct udphdr *udphxD = (struct udphdr*)(packet_body+14+(int)(iph->ihl*4));                    
                     std::cout<<"                Puerto de origen: "<<ntohs(udphxD->source)<<'\n';
-                    std::cout<<"                Puerto de destino: "<<ntohs(udphxD->dest)<<'\n';                    
+                    paqueteAGuardar["puertoOrigen"] = ntohs(udphxD->source);
+                    std::cout<<"                Puerto de destino: "<<ntohs(udphxD->dest)<<'\n';      
+                    paqueteAGuardar["puertoDestino"] = ntohs(udphxD->dest);              
                     std::cout<<"                Checksum: "<<udphxD->check<<'\n';
+                    paqueteAGuardar["checksum"] = udphxD->check;         
                     std::cout<<"                Tamano del paquete: "<<udphxD->len<<'\n';  
+                    paqueteAGuardar["tamanioPaquete"] = udphxD->len;         
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(udphdr))<<'\n';
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
                 }
 			break;
         }
     }else if(ntohs(eth_header->ether_type) == 0x0806){
+        paqueteAGuardar["tipo"] = "Paquete ARP";
         std::cout<<"    Es un paquete ARP\n";                        
     }else if(ntohs(eth_header->ether_type) == 0x8035){
+        paqueteAGuardar["tipo"] = "Paquete ARP reverso";
         std::cout<<"    Es un paquete ARP reverso\n";
     }       
+    paqueteAGuardar["paqueteCompleto"] = Util::dataToHex(packet_body);
     std::cout<<paqueteAGuardar.dump()<<'\n';
     if(!Capturador::primerPaquete){
         fprintf(Capturador::archivoSalida, ",%s",paqueteAGuardar.dump().c_str());
