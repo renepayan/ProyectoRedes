@@ -56,7 +56,7 @@ std::string Capturador::toString(){
     retorno+="Dispositivo de red: "+&(this->interface->name)+'\n';        
     retorno+="Filtros disponibles:\n ";
     for(int i = 0; i <= this->filtros.size(); i++){
-        retorno+=itoa(i)+") "+filtros[i]->toString()+'\n';
+        retorno+=itoa(i)+") "+filtros[i].toString()+'\n';
     }
     int fd = fileno(this->archivoSalida); 
     sprintf(path, "/proc/self/fd/%d", fd);
