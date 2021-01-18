@@ -106,10 +106,10 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     }       
     std::cout<<paqueteAGuardar.dump()<<'\n';
     if(!Capturador::primerPaquete){
-        fprintf(Capturador::archivoSalida, ",%s",paqueteAGuardar.dump());
+        fprintf(Capturador::archivoSalida, ",%s",paqueteAGuardar.dump().c_str());
     }else{
         Capturador::primerPaquete = false;
-        fprintf(Capturador::archivoSalida, "%s",paqueteAGuardar.dump());
+        fprintf(Capturador::archivoSalida, "%s",paqueteAGuardar.dump().c_str());
     }
     std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
     return;
