@@ -33,6 +33,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     nlohmann::json paqueteAGuardar;
     std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
     std::cout<<"Paquete recibido\n";
+    paqueteAGuardar["paqueteCompleto"] = Util::dataToHex(packet_body);
     struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet_body;
     std::string macOrigen, macDestino;
@@ -89,7 +90,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Checksum: "<<igmpXD->csum<<'\n';                   
                     paqueteAGuardar["checksum"] = igmpXD->csum; 
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(igmphdr))<<'\n';
-                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr));
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(igmphdr));
                 }		    
 			break;
 		    case 6:{  //TCP Protocol
@@ -109,7 +110,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Ventana: "<<tcphxD->window<<'\n';    
                     paqueteAGuardar["ventana"] = (tcphxD->window);
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(tcphdr))<<'\n';
-                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr));
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(tcphdr));
                 }
 			break;
 		    case 17:{
@@ -125,7 +126,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Tamano del paquete: "<<udphxD->len<<'\n';  
                     paqueteAGuardar["tamanioPaquete"] = udphxD->len;         
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(udphdr))<<'\n';
-                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr));
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(udphdr));
                 }
 			break;
         }
@@ -135,8 +136,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     }else if(ntohs(eth_header->ether_type) == 0x8035){
         paqueteAGuardar["tipo"] = "Paquete ARP reverso";
         std::cout<<"    Es un paquete ARP reverso\n";
-    }       
-    paqueteAGuardar["paqueteCompleto"] = Util::dataToHex(packet_body);
+    }           
     std::cout<<paqueteAGuardar.dump()<<'\n';
     if(!Capturador::primerPaquete){
         fprintf(Capturador::archivoSalida, ",%s",paqueteAGuardar.dump().c_str());
