@@ -22,9 +22,9 @@ pcap_if_t *seleccionarInterface(){
     }
     for(i=0,d = alldevs; d != NULL; d= d->next){  
         if (d->description)
-            cout<<++i<<". "<<d->name<<" ("<<d->description<<")\n";              
+            cout<<i++<<". "<<d->name<<" ("<<d->description<<")\n";              
         else
-            cout<<++i<<". "<<d->name<<" (sin descripcion)\n";          
+            cout<<i++<<". "<<d->name<<" (sin descripcion)\n";          
     }    
     while(true){    
         cout<<"Ingrese el numero de la interface a utilizar: "; 
@@ -37,7 +37,7 @@ pcap_if_t *seleccionarInterface(){
     }
     d = alldevs;
     for(i = 0; i <n; i++){        
-        d->next;
+        d = d->next;
     }    
     return d;
 }
