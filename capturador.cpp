@@ -46,6 +46,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         struct iphdr *iph = (struct iphdr*)(packet_body+14);
         std::cout<<"Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
         std::cout<<"Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
+        std::cout<<"Tamano del paquete: "<<iph->total_length<<'\n';                    
         switch (iph->protocol){
 		    case 1:  //ICMP Protocol
                 //Aqui va el IMCP
@@ -58,11 +59,10 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"Es un paquete TCP\n";                 
                     struct tcphdr *tcphxD = (struct tcphdr*)(packet_body+14+(int)(iph->ihl*4));
                     std::cout<<"Puerto de origen: "<<ntohs(tcphxD->source)<<'\n';
-                    std::cout<<"Puerto de destino: "<<ntohs(tcphxD->dest)<<'\n';
-                    std::cout<<"Tamano del paquete: "<tcphxD->total_length<<'\n';                    
+                    std::cout<<"Puerto de destino: "<<ntohs(tcphxD->dest)<<'\n';                    
                     std::cout<<"Numero de secuencia: "<<tcphxD->seq<<'\n';
                     std::cout<<"Numero de secuencia del ACK: "<<tcphxD->ack_seq<<'\n';
-                    std::cout<<"Checksum: "<<tcphxD->checksum<<'\n';
+                    std::cout<<"Checksum: "<<tcphxD->check<<'\n';
                     std::cout<<"Ventana: "<<tcphxD->window<<'\n';                    
                 }
 			break;
