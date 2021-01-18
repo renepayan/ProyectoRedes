@@ -7,6 +7,7 @@
 #include <linux/ip.h>
 #include <linux/tcp.h>
 #include <linux/udp.h>
+#include <linux/icmp.h>
 
 #include "util.hpp"
 #include "capturador.hpp"
@@ -24,8 +25,8 @@ bool Capturador::ValidarFiltros(){
 	return true;
 }
 void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){
-    std::cout<<"--------------------------------------------------------------------------------------------------------------";
-    std::cout<<"Paquete recibido";
+    std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
+    std::cout<<"Paquete recibido\n";
     struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet_body;
     std::string macOrigen, macDestino;
@@ -45,13 +46,21 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         std::cout<<"        Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
         std::cout<<"        Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
         std::cout<<"        Tamano del paquete: "<<iph->tot_len<<'\n';                    
+        std::cout<<"        Protocolo: "<<iph->proto<<'\n';                    
         switch (iph->protocol){
-		    case 1:  //ICMP Protocol
-                //Aqui va el IMCP
-
+		    case 1:{
+                    std::cout<<"            Es un paquete ICMP\n";
+                    struct icmphdr *icmpXD = (struct icmphdr*)(packet_body+14+(int)(iph->ihl*4));
+                    std::cout<<"                Tipo de mensaje: "<<ntohs(icmpXD->type)<<'\n';\
+                    std::cout<<"                Sub tipo de mensaje: "<<ntohs(icmpXD->code)<<'\n';
+                    std::cout<<"                Numero de secuencia: "<<ntohs(icmpXD->sequence)<<'\n';                    
+                    std::cout<<"                Puerta de enlace: "<<tcphxD->gateway<<'\n';                    
+                    std::cout<<"                Checksum: "<<tcphxD->check<<'\n';                    
+                }
 			break;
-		    case 2:  //IGMP Protocol
-			    
+		    case 2:{
+                    std::cout<<"            Es un paquete IGMP\n";
+                }			    
 			break;
 		    case 6:{  //TCP Protocol
                     std::cout<<"            Es un paquete TCP\n";                 
@@ -79,7 +88,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     }else if(ntohs(eth_header->ether_type) == 0x8035){
         std::cout<<"    Es un paquete ARP reverso\n";
     }       
-    std::cout<<"--------------------------------------------------------------------------------------------------------------";
+    std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
     return;
 }
 void Capturador::iniciarCaptura(){
