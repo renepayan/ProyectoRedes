@@ -5,7 +5,7 @@
 #include <netinet/in.h>
 #include <net/ethernet.h>
 
-
+#include "util.hpp"
 #include "capturador.hpp"
 
 Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *archivoSalida, int nivelVerbosidad){
@@ -32,11 +32,11 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     const u_char *temp_pointer = *packet_body;        
     int byte_count = 0;        
     while (byte_count++ < 7) {
-        macDestino += std::hex << (int)*temp_pointer;
+        macDestino += Util::intToHexString((int)*temp_pointer);
         temp_pointer++;
     }
     while (byte_count++ < 14) {
-        macOrigen += std::hex << (int)*temp_pointer;
+        macOrigen += Util::intToHexString((int)*temp_pointer);
         temp_pointer++;
     }
     cout<<"Direccion mac de origen: "<<macOrigen;     
