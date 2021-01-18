@@ -104,6 +104,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     }else if(ntohs(eth_header->ether_type) == 0x8035){
         std::cout<<"    Es un paquete ARP reverso\n";
     }       
+    std::cout<<paqueteAGuardar.dump()<<'\n';
     if(!Capturador::primerPaquete){
         fprintf(Capturador::archivoSalida, ",%s",paqueteAGuardar.dump());
     }else{
