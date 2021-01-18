@@ -43,9 +43,6 @@ void Capturador::iniciarCaptura(){
     catch (...) {
         std::cout<<"se murio\n";
     }  
-      
-    
-
 }
 void Capturador::detenerCaptura(){
     fclose(archivoSalida);
@@ -73,6 +70,35 @@ std::string Capturador::obtenerRed(){
     }  
     return net;
 }
+std::string Capturador::obtenerMascaraDeRed(){
+    char *net;    
+    char *mask;
+    char *dev;
+    int ret;
+    char errbuf[PCAP_ERRBUF_SIZE];
+    bpf_u_int32 netp;   
+    bpf_u_int32 maskp; 
+    struct in_addr addr;    
+
+    ret = pcap_lookupnet(dev,&netp,&maskp,errbuf);
+    if(ret == -1){
+        printf("%s\n",errbuf);
+        exit(1);
+    }    
+    addr.s_addr = netp;
+    net = inet_ntoa(addr);
+    if(net == NULL){
+        perror("inet_ntoa");
+        exit(1);
+    }  
+    addr.s_addr = maskp;
+    mask = inet_ntoa(addr);
+    if(mask == NULL){
+        perror("inet_ntoa");
+        exit(1);
+    }      
+    return mask;
+}
 std::string Capturador::toString(){
     std::string retorno = "";
     char path[1024];
@@ -80,7 +106,10 @@ std::string Capturador::toString(){
     std::string tmp = "Dispositivo de red: ";
     retorno+=tmp+this->interface->name+'\n';        
     retorno+="Filtros disponibles:\n ";
-    for(int i = 0; i <= this->filtros.size(); i++){
+    if(this->filtros.size() == 0){
+        retorno+="----No hay filtros disponibles----\n"
+    }
+    for(int i = 0; i < this->filtros.size(); i++){
         retorno+=std::to_string(i)+") "+filtros[i].toString()+'\n';
     }
     int fd = fileno(this->archivoSalida); 
@@ -90,5 +119,7 @@ std::string Capturador::toString(){
     tmp="Archivo de salida: ";
     retorno+=tmp+result+'\n';
     retorno+="Nivel de verbosidad: "+std::to_string(this->nivelVerbosidad); 
+    retorno+="Red: "+this->obtenerRed()+'\n';
+    retorno+="Mascara de red: "+this->obtenerMascaraDeRed();
 	return retorno;
 }
