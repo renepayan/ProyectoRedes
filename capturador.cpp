@@ -15,7 +15,7 @@
 #include "capturador.hpp"
 
 FILE* Capturador::archivoSalida = nullptr;
-bool Capturador::primerPaquete = false;
+bool Capturador::primerPaquete = true;
 Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *archivoSalida, int nivelVerbosidad){
     this->interface = interface;    
     this->filtros = filtros;
@@ -23,7 +23,7 @@ Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *a
     this->nivelVerbosidad = nivelVerbosidad;
     this->capturaActiva = false;    
     this->idCaptura = 0;
-    Capturador::primerPaquete = false;
+    Capturador::primerPaquete = true;
 }
 
 bool Capturador::ValidarFiltros(){
@@ -73,6 +73,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Tipo de mensaje: "<<igmpXD->type<<'\n';\
                     std::cout<<"                Sub tipo de mensaje: "<<igmpXD->code<<'\n';                                        
                     std::cout<<"                Checksum: "<<igmpXD->csum<<'\n';                    
+                    std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(igmphdr))<<'\n';
                 }		    
 			break;
 		    case 6:{  //TCP Protocol
@@ -83,7 +84,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Numero de secuencia: "<<tcphxD->seq<<'\n';
                     std::cout<<"                Numero de secuencia del ACK: "<<tcphxD->ack_seq<<'\n';
                     std::cout<<"                Checksum: "<<tcphxD->check<<'\n';
-                    std::cout<<"                Ventana: "<<tcphxD->window<<'\n';                    
+                    std::cout<<"                Ventana: "<<tcphxD->window<<'\n';    
+                    std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(tcphdr))<<'\n';
                 }
 			break;
 		    case 17:{
@@ -93,12 +95,12 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Puerto de destino: "<<ntohs(udphxD->dest)<<'\n';                    
                     std::cout<<"                Checksum: "<<udphxD->check<<'\n';
                     std::cout<<"                Tamano del paquete: "<<udphxD->len<<'\n';  
+                    std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(udphdr))<<'\n';
                 }
 			break;
         }
     }else if(ntohs(eth_header->ether_type) == 0x0806){
-        std::cout<<"    Es un paquete ARP\n";
-                
+        std::cout<<"    Es un paquete ARP\n";                        
     }else if(ntohs(eth_header->ether_type) == 0x8035){
         std::cout<<"    Es un paquete ARP reverso\n";
     }       
