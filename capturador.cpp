@@ -77,7 +77,8 @@ std::string Capturador::toString(){
     std::string retorno = "";
     char path[1024];
     char result[1024];
-    retorno+="Dispositivo de red: "+&(this->interface->name)+'\n';        
+    std::string tmp = "Dispositivo de red: ";
+    retorno+=tmp+this->interface->name+'\n';        
     retorno+="Filtros disponibles:\n ";
     for(int i = 0; i <= this->filtros.size(); i++){
         retorno+=std::to_string(i)+") "+filtros[i].toString()+'\n';
