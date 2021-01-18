@@ -39,9 +39,9 @@ void Capturador::iniciarCaptura(){
         );
         if (handle == NULL) {
             fprintf(stderr, "Could not open device %s: %s\n", this->interface->name, error_buffer);
-            return 2;
+            exit(2);
         }
-        pcap_loop(handle, 0, this->my_packet_handler, NULL);        
+        pcap_loop(handle, 0, my_packet_handler, NULL);        
     }
     catch (...) {
         std::cout<<"se murio\n";
