@@ -5,6 +5,8 @@
 #include <netinet/in.h>
 #include <net/ethernet.h>
 #include <linux/ip.h>
+#include <linux/tcp.h>
+#include <linux/udp.h>
 
 #include "util.hpp"
 #include "capturador.hpp"
@@ -43,60 +45,35 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         std::cout<<"Es un paquete IP\n";
         struct iphdr *iph = (struct iphdr*)(packet_body+14);
         std::cout<<"Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
-        std::cout<<"Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';           
+        std::cout<<"Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
+        switch (iph->protocol){
+		    case 1:  //ICMP Protocol
+                //Aqui va el IMCP
+
+			break;
+		    case 2:  //IGMP Protocol
+			    
+			break;
+		    case 6:{  //TCP Protocol
+                    std::cout<<"Es un paquete TCP\n";
+                    struct tcphdr *tcphxD = (struct tcphdr*)(iph+iph->tot_len);
+                    std::cout<<"Puerto de origen: "<<tcphxD->source<<'\n';
+                    std::cout<<"Puerto de origen: "<<tcphxD->dest<<'\n';
+                    std::cout<<"Numero de secuencia: "<<tcphxD->seq<<'\n';
+                    std::cout<<"Numero de secuencia del ACK: "<<tcphxD->ack_seq<<'\n';
+                    std::cout<<"Ventana: "<<tcphxD->window<<'\n';
+                }
+			break;
+		    case 17:
+    			std::cout<<"Es un paquete UDP\n";
+			    
+			break;
+        }
     }else if(ntohs(eth_header->ether_type) == 0x0806){
         std::cout<<"Es un paquete ARP\n";
     }else if(ntohs(eth_header->ether_type) == 0x8035){
         std::cout<<"Es un paquete ARP reverso\n";
-    }
-    return;
-    //se distingue si es un paquete IP (UDP y TCP) o ARP o Reverse ARP    
-
-    if (ntohs(eth_header->ether_type) != ETHERTYPE_IP) {
-        printf("Not an IP packet. Skipping...\n\n");
-        return;
-    }    
-    printf("Total packet available: %d bytes\n", packet_header->caplen);
-    printf("Expected packet size: %d bytes\n", packet_header->len);
-    const u_char *ip_header;
-    const u_char *tcp_header;
-    const u_char *payload;
-    
-    int ethernet_header_length = 14; 
-    int ip_header_length;
-    int tcp_header_length;
-    int payload_length;    
-    ip_header = packet_body + ethernet_header_length;
-    ip_header_length = ((*ip_header) & 0x0F);    
-    ip_header_length = ip_header_length * 4;
-
-
-    printf("IP header length (IHL) in bytes: %d\n", ip_header_length);
-    u_char protocol = *(ip_header + 9);
-    if (protocol != IPPROTO_TCP) {
-        printf("Not a TCP packet. Skipping...\n\n");
-        return;
-    }
-    tcp_header = packet_body + ethernet_header_length + ip_header_length;    
-    tcp_header_length = ((*(tcp_header + 12)) & 0xF0) >> 4;    
-    tcp_header_length = tcp_header_length * 4;
-    printf("TCP header length in bytes: %d\n", tcp_header_length);
-    int total_headers_size = ethernet_header_length+ip_header_length+tcp_header_length;
-    printf("Size of all headers combined: %d bytes\n", total_headers_size);
-    payload_length = packet_header->caplen -(ethernet_header_length + ip_header_length + tcp_header_length);
-    printf("Payload size: %d bytes\n", payload_length);
-    payload = packet_body + total_headers_size;
-    printf("Memory address where payload begins: %p\n\n", payload);
-    std::string contenido = "";
-    /*if (payload_length > 0) {
-        const u_char *temp_pointer = payload;
-        int byte_count = 0;        
-        while (byte_count++ < payload_length) {
-            std::cout << std::hex << (int)*temp_pointer;
-            temp_pointer++;
-        }
-        printf("\n");
-    }*/
+    }       
     return;
 }
 void Capturador::iniciarCaptura(){
@@ -194,7 +171,7 @@ std::string Capturador::toString(){
     readlink(path, result, sizeof(result)-1);
     tmp="Archivo de salida: ";
     retorno+=tmp+result+'\n';
-    retorno+="Nivel de verbosidad: "+std::to_string(this->nivelVerbosidad)+'\n'; 
+    //retorno+="Nivel de verbosidad: "+std::to_string(this->nivelVerbosidad)+'\n'; 
     retorno+="Red: "+this->obtenerRed()+'\n';
     retorno+="Mascara de red: "+this->obtenerMascaraDeRed();
 	return retorno;
