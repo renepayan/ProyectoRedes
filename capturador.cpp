@@ -71,7 +71,7 @@ std::string Capturador::obtenerRed(){
         perror("inet_ntoa");
         exit(1);
     }  
-    return ""+net;
+    return net;
 }
 std::string Capturador::toString(){
     std::string retorno = "";
