@@ -32,8 +32,7 @@ bool Capturador::ValidarFiltros(){
 void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){    
     nlohmann::json paqueteAGuardar;
     std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
-    std::cout<<"Paquete recibido\n";
-    paqueteAGuardar["paqueteCompleto"] = Util::dataToHex(packet_body);
+    std::cout<<"Paquete recibido\n";    
     struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet_body;
     std::string macOrigen, macDestino;
@@ -136,8 +135,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     }else if(ntohs(eth_header->ether_type) == 0x8035){
         paqueteAGuardar["tipo"] = "Paquete ARP reverso";
         std::cout<<"    Es un paquete ARP reverso\n";
-    }           
-    std::cout<<paqueteAGuardar.dump()<<'\n';
+    }               
     if(!Capturador::primerPaquete){
         fprintf(Capturador::archivoSalida, ",%s",paqueteAGuardar.dump().c_str());
     }else{
