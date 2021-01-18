@@ -45,8 +45,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         std::cout<<"    Es un paquete IP\n";
         struct iphdr *iph = (struct iphdr*)(packet_body+14);
         std::cout<<"        Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
-        std::cout<<"        Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
-        std::cout<<"        Tamano del paquete: "<<iph->tot_len<<'\n';                    
+        std::cout<<"        Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';              
         std::cout<<"        Protocolo: "<<(int)iph->protocol<<'\n';                    
         switch ((int)iph->protocol){
 		    case 1:{
