@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 #include <pcap.h>
+#include <unistd.h>
+#include <limits.h>
 
 #include "capturador.hpp"
 
@@ -51,6 +53,7 @@ void Capturador::detenerCaptura(){
 }        
 std::string Capturador::obtenerRed(){
     char *net;    
+    char *dev;
     int ret;
     char errbuf[PCAP_ERRBUF_SIZE];
     bpf_u_int32 netp;   
@@ -69,8 +72,6 @@ std::string Capturador::obtenerRed(){
         exit(1);
     }  
     return ""+net;
-
-
 }
 std::string Capturador::toString(){
     std::string retorno = "";
