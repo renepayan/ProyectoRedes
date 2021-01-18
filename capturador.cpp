@@ -40,7 +40,7 @@ void Capturador::iniciarCaptura(){
 
 }
 void Capturador::detenerCaptura(){
-
+    fclose(archivoSalida);
 }        
 std::string Capturador::toString(){
     //Aqui se imprimen los detalles
