@@ -32,8 +32,7 @@ bool Capturador::ValidarFiltros(){
 void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){    
     nlohmann::json paqueteAGuardar;
     std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
-    std::cout<<"Paquete recibido\n";    
-    std::cout<<Util::dataToHex(packet_body+1)<<'\n';
+    std::cout<<"Paquete recibido\n";        
     struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet_body;
     std::string macOrigen, macDestino;
