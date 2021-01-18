@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-
+#include <arpa/inet.h>
 #include "util.hpp"
 
 std::string Util::intToHexString(int valor){
@@ -11,13 +11,12 @@ std::string Util::intToHexString(int valor){
     }
     return retorno;
 }
-std::string Util::intToIpAddress(unsigned int ip){
+std::string Util::intToIpAddress(uint32_t ip){
     std::string retorno;
-    unsigned char bytes[4];
-    bytes[0] = ip & 0xFF;
-    bytes[1] = (ip >> 8) & 0xFF;
-    bytes[2] = (ip >> 16) & 0xFF;
-    bytes[3] = (ip >> 24) & 0xFF;   
-    retorno+=bytes[3]+bytes[2]+bytes[1]+bytes[0];    
+    
+    uint32_t ip = 2110443574;
+    struct in_addr ip_addr;
+    ip_addr.s_addr = ip;
+    retornp = inet_ntoa(ip_addr);
     return retorno;
 }
