@@ -43,7 +43,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     std::cout<<"Direccion mac de destino: "<<macDestino<<'\n';         
     if(ntohs(eth_header->ether_type) == 0x0800){
         std::cout<<"Es un paquete IP\n";
-        struct iphdr *iph = (struct iphdr*)(packet_body+14);
+        struct iphdr *iph = (struct iphdr*)(packet_body+iph->ihl);
         std::cout<<"Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
         std::cout<<"Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
         switch (iph->protocol){
