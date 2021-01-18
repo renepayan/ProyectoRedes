@@ -46,7 +46,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         struct iphdr *iph = (struct iphdr*)(packet_body+14);
         std::cout<<"Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
         std::cout<<"Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
-        std::cout<<"Tamano del paquete: "<<iph->total_length<<'\n';                    
+        std::cout<<"Tamano del paquete: "<<iph->tot_len<<'\n';                    
         switch (iph->protocol){
 		    case 1:  //ICMP Protocol
                 //Aqui va el IMCP
@@ -69,9 +69,9 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
 		    case 17:{
     			    std::cout<<"Es un paquete UDP\n";
 			        struct udphdr *udphxD = (struct udphdr*)(packet_body+14+(int)(iph->ihl*4));
-                    std::cout<<"Puerto de origen: "<<ntohs(udphxD->src)<<'\n';
+                    std::cout<<"Puerto de origen: "<<ntohs(udphxD->source)<<'\n';
                     std::cout<<"Puerto de destino: "<<ntohs(udphxD->dest)<<'\n';                    
-                    std::cout<<"Checksum: "<<udphxD->checksum<<'\n';
+                    std::cout<<"Checksum: "<<udphxD->check<<'\n';
                     std::cout<<"Tamano del paquete: "<<udphxD->len<<'\n';  
                 }
 			break;
