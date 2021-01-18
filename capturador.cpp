@@ -2,6 +2,9 @@
 #include <pcap.h>
 #include <unistd.h>
 #include <limits.h>
+#include <netinet/in.h>
+#include <net/ethernet.h>
+
 
 #include "capturador.hpp"
 
@@ -29,7 +32,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
        to the ether_header. The data payload of the packet comes
        after the headers. Different packet types have different header
        lengths though, but the ethernet header is always the same (14 bytes) */
-    eth_header = (struct ether_header *) packet;
+    eth_header = (struct ether_header *) packet_body;
     
     if (ntohs(eth_header->ether_type) == ETHERTYPE_IP) {
         printf("IP\n");
