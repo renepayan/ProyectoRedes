@@ -119,9 +119,9 @@ int main(void){
     int nivelVerbosidad;
 
     interface = seleccionarInterface();
-    filtros = especificarFiltros();    
+    //filtros = especificarFiltros();    
     archivoGuardado = especificarArchivo();
-    nivelVerbosidad = especificarNivelVerbosidad();
+    //nivelVerbosidad = especificarNivelVerbosidad();
 
     Capturador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);    
     cout<<capturador.toString()<<'\n';

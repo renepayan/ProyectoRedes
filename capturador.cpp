@@ -158,20 +158,20 @@ std::string Capturador::toString(){
     char result[1024];
     std::string tmp = "Dispositivo de red: ";
     retorno+=tmp+this->interface->name+'\n';        
-    retorno+="Filtros disponibles:\n ";
+    /*retorno+="Filtros disponibles:\n ";
     if(this->filtros.size() == 0){
         retorno+="----No hay filtros disponibles----\n";
     }
     for(int i = 0; i < this->filtros.size(); i++){
         retorno+=std::to_string(i)+") "+filtros[i].toString()+'\n';
-    }
+    }*/
     int fd = fileno(this->archivoSalida); 
     sprintf(path, "/proc/self/fd/%d", fd);
     memset(result, 0, sizeof(result));
     readlink(path, result, sizeof(result)-1);
     tmp="Archivo de salida: ";
     retorno+=tmp+result+'\n';
-    retorno+="Nivel de verbosidad: "+std::to_string(this->nivelVerbosidad)+'\n'; 
+    //retorno+="Nivel de verbosidad: "+std::to_string(this->nivelVerbosidad)+'\n'; 
     retorno+="Red: "+this->obtenerRed()+'\n';
     retorno+="Mascara de red: "+this->obtenerMascaraDeRed();
 	return retorno;
