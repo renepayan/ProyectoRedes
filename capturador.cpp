@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <netinet/in.h>
 #include <net/ethernet.h>
-#include <ip.h>
+#include <linux/ip.h>
 
 #include "util.hpp"
 #include "capturador.hpp"
