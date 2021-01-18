@@ -14,6 +14,7 @@ Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *a
     this->archivoSalida = archivoSalida;
     this->nivelVerbosidad = nivelVerbosidad;
     this->capturaActiva = false;    
+    this->idCaptura = 0;
 }
 
 bool Capturador::ValidarFiltros(){
@@ -26,6 +27,21 @@ void Capturador::print_packet_info(const u_char *packet, struct pcap_pkthdr pack
 void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){
     struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet_body;
+
+    std::string macOrigen, macDestino;
+    const u_char *temp_pointer = *packet_body;        
+    int byte_count = 0;        
+    while (byte_count++ < 7) {
+        macDestino += std::hex << (int)*temp_pointer;
+        temp_pointer++;
+    }
+    while (byte_count++ < 14) {
+        macOrigen += std::hex << (int)*temp_pointer;
+        temp_pointer++;
+    }
+    cout<<"Direccion mac de origen: "<<macOrigen;     
+    cout<<"Direccion mac de destino: "<<macDestino;     
+
     if (ntohs(eth_header->ether_type) != ETHERTYPE_IP) {
         printf("Not an IP packet. Skipping...\n\n");
         return;
@@ -43,6 +59,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     ip_header = packet_body + ethernet_header_length;
     ip_header_length = ((*ip_header) & 0x0F);    
     ip_header_length = ip_header_length * 4;
+
+
     printf("IP header length (IHL) in bytes: %d\n", ip_header_length);
     u_char protocol = *(ip_header + 9);
     if (protocol != IPPROTO_TCP) {
@@ -60,7 +78,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     payload = packet_body + total_headers_size;
     printf("Memory address where payload begins: %p\n\n", payload);
     std::string contenido = "";
-    if (payload_length > 0) {
+    /*if (payload_length > 0) {
         const u_char *temp_pointer = payload;
         int byte_count = 0;        
         while (byte_count++ < payload_length) {
@@ -68,7 +86,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
             temp_pointer++;
         }
         printf("\n");
-    }
+    }*/
+    this->idCaptura++;
     return;
 }
 void Capturador::iniciarCaptura(){

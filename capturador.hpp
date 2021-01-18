@@ -13,6 +13,7 @@ class Capturador{
         FILE *archivoSalida;
         bool capturaActiva;
         int nivelVerbosidad;
+        long long int idCaptura;
     public:
         Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *archivoSalida, int nivelVerbosidad);
         bool ValidarFiltros();
