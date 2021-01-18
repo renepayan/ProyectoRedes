@@ -123,7 +123,7 @@ int main(void){
     archivoGuardado = especificarArchivo();
     nivelVerbosidad = especificarNivelVerbosidad();
 
-    Capturador capturador(interface, filtros, nullptr, nivelVerbosidad);    
+    Capturador capturador(interface, filtros, archivoGuardado, nivelVerbosidad);    
     cout<<capturador.toString()<<'\n';
     capturador.iniciarCaptura();
 }
