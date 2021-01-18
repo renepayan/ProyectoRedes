@@ -67,6 +67,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     			std::cout<<"Es un paquete UDP\n";
 			    
 			break;
+        }
     }else if(ntohs(eth_header->ether_type) == 0x0806){
         std::cout<<"Es un paquete ARP\n";
     }else if(ntohs(eth_header->ether_type) == 0x8035){
