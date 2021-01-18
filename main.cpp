@@ -35,6 +35,7 @@ pcap_if_t *seleccionarInterface(){
             break;
         }
     }
+    d = alldevs;
     for(i = 0; i <n; i++){        
         d->next;
     }
