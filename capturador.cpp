@@ -29,8 +29,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     eth_header = (struct ether_header *) packet_body;
     std::string macOrigen, macDestino;
     for(int i = 0; i <= ETHER_ADDR_LEN; i++){
-        macOrigen+=eth_header->ether_shost[i];
-        macDestino+=eth_header->ether_dhost[i];
+        macOrigen+=Util::intToHexString(eth_header->ether_shost[i]);
+        macDestino+=Util::intToHexString(eth_header->ether_dhost[i]);
     }
     std::cout<<"Direccion mac de origen: "<<macOrigen<<'\n';     
     std::cout<<"Direccion mac de destino: "<<macDestino<<'\n';     
