@@ -45,7 +45,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         std::cout<<"    Es un paquete IP\n";
         struct iphdr *iph = (struct iphdr*)(packet_body+14);
         std::cout<<"        Direccion IP de origen: "<<Util::intToIpAddress(iph->saddr)<<'\n';     
-        std::cout<<"        Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';              
+        std::cout<<"        Direccion IP de destino: "<<Util::intToIpAddress(iph->daddr)<<'\n';   
+        std::cout<<"        Tamano del paquete: "<<iph->tot_len<<'\n';                    
         std::cout<<"        Protocolo: "<<(int)iph->protocol<<'\n';                    
         switch ((int)iph->protocol){
 		    case 1:{
@@ -55,8 +56,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Sub tipo de mensaje: "<<(int)icmpXD->code<<'\n';
                     std::cout<<"                Numero de secuencia: "<<icmpXD->un.echo.sequence<<'\n';                    
                     std::cout<<"                Puerta de enlace: "<<Util::intToIpAddress(icmpXD->un.gateway)<<'\n';                    
-                    std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';                    
-                    std::cout<<"                Tamanio del paquete: "<<icmpXD->len<<'\n';
+                    std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';                                        
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
                 }
 			break;
