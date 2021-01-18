@@ -74,7 +74,23 @@ vector<Filtro> especificarFiltros(){
             filtro.setPuertoOrigen(intTemp);
         }
         filtros.push_back(filtro);
-        
+        cout<<"Desea filtrar el puerto de destino?\n1)SI\n2)NO\n>>";        
+        cin>>opcion;        
+        if(opcion == 1){
+            cout<<"Ingrese el puerto de destino: ";
+            cin>>intTemp;
+            filtro.setPuertoDestino(intTemp);
+        }
+        filtros.push_back(filtro);
+        cout<<"Desea filtrar la aplicacion?\n1)SI\n2)NO\n>>";        
+        cin>>opcion;        
+        if(opcion == 1){
+            cout<<"Aplicaciones disponibles:\n1. HTTP\n2. DNS\n3. DHCP\n 4. ARP"
+            cout<<"Ingrese el numero de aplicacion: ";
+            cin>>intTemp;
+            filtro.setAplicacion(intTemp);
+        }
+        filtros.push_back(filtro);
     }
     return filtros;
 }
