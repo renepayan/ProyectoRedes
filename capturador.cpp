@@ -28,7 +28,7 @@ bool Capturador::ValidarFiltros(){
 	return true;
 }
 void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){    
-    json paqueteAGuardar;
+    nlohmann::json json paqueteAGuardar;
     std::cout<<"--------------------------------------------------------------------------------------------------------------\n";
     std::cout<<"Paquete recibido\n";
     struct ether_header *eth_header;
