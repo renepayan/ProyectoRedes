@@ -9,6 +9,7 @@
 #include <linux/udp.h>
 #include <linux/icmp.h>
 #include <linux/igmp.h>
+#include <linux/arp.h>
 #include "util.hpp"
 #include "capturador.hpp"
 
@@ -51,13 +52,12 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
 		    case 1:{
                     std::cout<<"            Es un paquete ICMP\n";
                     struct icmphdr *icmpXD = (struct icmphdr*)(packet_body+14+(int)(iph->ihl*4));
-                    std::cout<<"                Tipo de mensaje: "<<icmpXD->type<<'\n';\
-                    std::cout<<"                Sub tipo de mensaje: "<<icmpXD->code<<'\n';
+                    std::cout<<"                Tipo de mensaje: "<<(int)icmpXD->type<<'\n';\
+                    std::cout<<"                Sub tipo de mensaje: "<<(int)icmpXD->code<<'\n';
                     std::cout<<"                Numero de secuencia: "<<icmpXD->un.echo.sequence<<'\n';                    
                     std::cout<<"                Puerta de enlace: "<<Util::intToIpAddress(icmpXD->un.gateway)<<'\n';                    
-                    std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';
-                    const unsigned char *dataICMP = packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr);         
-                    std::cout<<"                Data: "<<dataICMP<<'\n';
+                    std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';                    
+                    std::cout<<"                Tamanio del paquete: "<<icmpXD->length<<'\n';
                 }
 			break;
 		    case 2:{
@@ -91,6 +91,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         }
     }else if(ntohs(eth_header->ether_type) == 0x0806){
         std::cout<<"    Es un paquete ARP\n";
+                
     }else if(ntohs(eth_header->ether_type) == 0x8035){
         std::cout<<"    Es un paquete ARP reverso\n";
     }       
