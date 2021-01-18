@@ -9,7 +9,7 @@
 #include <linux/udp.h>
 #include <linux/icmp.h>
 #include <linux/igmp.h>
-#include <linux/arp.h>
+#include <linux/if_arp.h>
 #include "util.hpp"
 #include "capturador.hpp"
 
