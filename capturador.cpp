@@ -8,36 +8,7 @@ Capturador::Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *a
     this->filtros = filtros;
     this->archivoSalida = archivoSalida;
     this->nivelVerbosidad = nivelVerbosidad;
-    this->capturaActiva = false;
-    char *dev; /* name of the device to use */ 
-    char *net; /* dot notation of the network address */
-    char *mask;/* dot notation of the network mask    */  
-    char errbuf[PCAP_ERRBUF_SIZE];
-    bpf_u_int32 netp; /* ip          */
-    bpf_u_int32 maskp;/* subnet mask */
-    struct in_addr addr;
-
-    int ret = pcap_lookupnet(interface->name,&netp,&maskp,errbuf);
-    if(ret == -1){
-        printf("%s\n",errbuf);
-        exit(1);
-    }
-    /* get the network address in a human readable form */
-    addr.s_addr = netp;
-    net = inet_ntoa(addr);
-    if(net == NULL)/* thanks Scott :-P */{
-        perror("inet_ntoa");
-        exit(1);
-    }
-    printf("NET: %s\n",net);
-    /* do the same as above for the device's mask */
-    addr.s_addr = maskp;
-    mask = inet_ntoa(addr);
-    if(mask == NULL){
-        perror("inet_ntoa");
-        exit(1);
-    }  
-    printf("MASK: %s\n",mask);
+    this->capturaActiva = false;    
 }
 
 bool Capturador::ValidarFiltros(){
@@ -79,6 +50,19 @@ void Capturador::detenerCaptura(){
     this->capturaActiva = false;
 }        
 std::string Capturador::toString(){
-    //Aqui se imprimen los detalles
-	return "";
+    std::string retorno = "";
+    char path[1024];
+    char result[1024];
+    retorno+="Dispositivo de red: "+this->interface->name+'\n';        
+    retorno+="Filtros disponibles:\n ";
+    for(int i = 0; i <= this->filtros.size(); i++){
+        retorno+=itoa(i)+") "+filtros[i]->toString()+'\n';
+    }
+    int fd = fileno(this->archivoSalida); 
+    sprintf(path, "/proc/self/fd/%d", fd);
+    memset(result, 0, sizeof(result));
+    readlink(path, result, sizeof(result)-1);
+    retorno+="Archivo de salida: "+result+'\n';
+    retorno+="Nivel de verbosidad: "+this->nivelVerbosidad; 
+	return retorno;
 }
