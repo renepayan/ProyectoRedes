@@ -9,13 +9,13 @@
 class Capturador{
     private:
         pcap_if_t *interface;
-        std::vector<Filtro>filtros;
-        static FILE *archivoSalida;
+        std::vector<Filtro>filtros;        
         bool capturaActiva;
         int nivelVerbosidad;
-        long long int idCaptura;        
-        static bool primerPaquete;
+        long long int idCaptura;                
     public:
+        static FILE *archivoSalida;
+        static bool primerPaquete;
         Capturador(pcap_if_t *interface, std::vector<Filtro>filtros, FILE *archivoSalida, int nivelVerbosidad);
         bool ValidarFiltros();
         void iniciarCaptura();
