@@ -76,7 +76,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Checksum: "<<icmpXD->checksum<<'\n';                                        
                     paqueteAGuardar["checksum"] = icmpXD->checksum;
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
-                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr));
                 }
 			break;
 		    case 2:{
@@ -89,7 +89,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Checksum: "<<igmpXD->csum<<'\n';                   
                     paqueteAGuardar["checksum"] = igmpXD->checksum; 
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(igmphdr))<<'\n';
-                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr));
                 }		    
 			break;
 		    case 6:{  //TCP Protocol
@@ -109,7 +109,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Ventana: "<<tcphxD->window<<'\n';    
                     paqueteAGuardar["ventana"] = (tcphxD->window);
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(tcphdr))<<'\n';
-                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr));
                 }
 			break;
 		    case 17:{
@@ -125,7 +125,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Tamano del paquete: "<<udphxD->len<<'\n';  
                     paqueteAGuardar["tamanioPaquete"] = udphxD->len;         
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(udphdr))<<'\n';
-                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr))<<'\n';
+                    paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr));
                 }
 			break;
         }
