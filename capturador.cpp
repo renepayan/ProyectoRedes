@@ -29,7 +29,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     eth_header = (struct ether_header *) packet_body;
 
     std::string macOrigen, macDestino;
-    const u_char *temp_pointer = *packet_body;        
+    const u_char *temp_pointer = (const u_char)*packet_body;        
     int byte_count = 0;        
     while (byte_count++ < 7) {
         macDestino += Util::intToHexString((int)*temp_pointer);
@@ -39,8 +39,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         macOrigen += Util::intToHexString((int)*temp_pointer);
         temp_pointer++;
     }
-    cout<<"Direccion mac de origen: "<<macOrigen;     
-    cout<<"Direccion mac de destino: "<<macDestino;     
+    std::cout<<"Direccion mac de origen: "<<macOrigen;     
+    std::cout<<"Direccion mac de destino: "<<macDestino;     
 
     if (ntohs(eth_header->ether_type) != ETHERTYPE_IP) {
         printf("Not an IP packet. Skipping...\n\n");
@@ -87,7 +87,6 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
         }
         printf("\n");
     }*/
-    this->idCaptura++;
     return;
 }
 void Capturador::iniciarCaptura(){
