@@ -59,14 +59,21 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     struct tcphdr *tcphxD = (struct tcphdr*)(packet_body+14+(int)(iph->ihl*4));
                     std::cout<<"Puerto de origen: "<<ntohs(tcphxD->source)<<'\n';
                     std::cout<<"Puerto de destino: "<<ntohs(tcphxD->dest)<<'\n';
+                    std::cout<<"Tamano del paquete: "<tcphxD->total_length<<'\n';                    
                     std::cout<<"Numero de secuencia: "<<tcphxD->seq<<'\n';
                     std::cout<<"Numero de secuencia del ACK: "<<tcphxD->ack_seq<<'\n';
-                    std::cout<<"Ventana: "<<tcphxD->window<<'\n';
+                    std::cout<<"Checksum: "<<tcphxD->checksum<<'\n';
+                    std::cout<<"Ventana: "<<tcphxD->window<<'\n';                    
                 }
 			break;
-		    case 17:
-    			std::cout<<"Es un paquete UDP\n";
-			    
+		    case 17:{
+    			    std::cout<<"Es un paquete UDP\n";
+			        struct tcphdr *udphxD = (struct udphdr*)(packet_body+14+(int)(iph->ihl*4));
+                    std::cout<<"Puerto de origen: "<<ntohs(udphxD->src)<<'\n';
+                    std::cout<<"Puerto de destino: "<<ntohs(udphxD->dest)<<'\n';                    
+                    std::cout<<"Checksum: "<<udphxD->checksum<<'\n';
+                    std::cout<<"Tamano del paquete: "<udphxD->len<<'\n';  
+                }
 			break;
         }
     }else if(ntohs(eth_header->ether_type) == 0x0806){
