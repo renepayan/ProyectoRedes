@@ -59,12 +59,12 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     printf("Payload size: %d bytes\n", payload_length);
     payload = packet_body + total_headers_size;
     printf("Memory address where payload begins: %p\n\n", payload);
-    
+    std::string contenido = "";
     if (payload_length > 0) {
         const u_char *temp_pointer = payload;
-        int byte_count = 0;
+        int byte_count = 0;        
         while (byte_count++ < payload_length) {
-            printf("%c", *temp_pointer);
+            std::cout << std::hex << (int)*temp_pointer;
             temp_pointer++;
         }
         printf("\n");
