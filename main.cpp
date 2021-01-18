@@ -114,7 +114,7 @@ int especificarNivelVerbosidad(){
     return nivel;    
 }
 
-void my_handler(sig_atomic_t s)
+void my_handler(sig_atomic_t s){
     std::cout<<"Cerrando captura\n";
     fclose(Capturador::archivoSalida);
 }
