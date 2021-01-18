@@ -54,8 +54,8 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Tipo de mensaje: "<<ntohs(icmpXD->type)<<'\n';\
                     std::cout<<"                Sub tipo de mensaje: "<<ntohs(icmpXD->code)<<'\n';
                     std::cout<<"                Numero de secuencia: "<<ntohs(icmpXD->sequence)<<'\n';                    
-                    std::cout<<"                Puerta de enlace: "<<tcphxD->gateway<<'\n';                    
-                    std::cout<<"                Checksum: "<<tcphxD->check<<'\n';                    
+                    std::cout<<"                Puerta de enlace: "<<icmpXD->gateway<<'\n';                    
+                    std::cout<<"                Checksum: "<<icmpXD->check<<'\n';                    
                 }
 			break;
 		    case 2:{
