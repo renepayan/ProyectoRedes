@@ -27,17 +27,10 @@ void Capturador::print_packet_info(const u_char *packet, struct pcap_pkthdr pack
 void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){
     struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet_body;
-
     std::string macOrigen, macDestino;
-    const u_char *temp_pointer = packet_body;        
-    int byte_count = 0;        
-    while (byte_count++ < 7) {
-        macDestino += Util::intToHexString((int)*temp_pointer);
-        temp_pointer++;
-    }
-    while (byte_count++ < 14) {
-        macOrigen += Util::intToHexString((int)*temp_pointer);
-        temp_pointer++;
+    for(int i = 0; i <= ETHER_ADDR_LEN; i++){
+        macOrigen+=eth_header->ether_shost[i];
+        macDestino+=eth_header->ether_dhost[i];
     }
     std::cout<<"Direccion mac de origen: "<<macOrigen<<'\n';     
     std::cout<<"Direccion mac de destino: "<<macDestino<<'\n';     
