@@ -10,6 +10,7 @@ Filtro::Filtro(int aplicacion, int puertoOrigen, int puertoDestino, std::string 
     this->puertoDestino = puertoDestino;
     this->ipOrigen = ipOrigen;
     this->ipDestino = ipDestino;
+
 }
 
 void Filtro::setAplicacion(int aplicacion){
@@ -26,4 +27,8 @@ void Filtro::setIpOrigen(std::string ipOrigen){
 }
 void Filtro::setIpDestino(std::string ipDestino){
     this->ipDestino = ipDestino;
+}
+
+std::string Filtro::toString(){
+    
 }

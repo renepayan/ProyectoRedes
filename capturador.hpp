@@ -21,5 +21,7 @@ class Capturador{
         std::string toString();     
         void print_packet_info(const u_char *packet, struct pcap_pkthdr packet_header);   
         void imprimirRed();
+        std::string Capturador::obtenerRed();
+        std::string Capturador::obtenerDireccionMAC();
 };
 #endif

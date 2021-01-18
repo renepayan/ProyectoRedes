@@ -49,7 +49,7 @@ void Capturador::detenerCaptura(){
     fclose(archivoSalida);
     this->capturaActiva = false;
 }        
-std::string Capturador::obtenerDireccionIP(){
+std::string Capturador::obtenerRed(){
     char *net;    
     int ret;
     char errbuf[PCAP_ERRBUF_SIZE];

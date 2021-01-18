@@ -24,5 +24,7 @@ class Filtro{
 
         std::string getIpDestino();
         void setIpDestino(std::string ipDestino);
+
+        std::string toString();
 };
 #endif
