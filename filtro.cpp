@@ -12,18 +12,18 @@ Filtro::Filtro(int aplicacion, int puertoOrigen, int puertoDestino, std::string 
     this->ipDestino = ipDestino;
 }
 
-Filtro::setAplicacion(int aplicacion){
+void Filtro::setAplicacion(int aplicacion){
     this->aplicacion = aplicacion;
 }
-Filtro::setPuertoOrigen(int puertoOrigen){
+void Filtro::setPuertoOrigen(int puertoOrigen){
     this->puertoOrigen = puertoOrigen;
 }
-Filtro::setPuertoDestino(int puertoDestino){
+void Filtro::setPuertoDestino(int puertoDestino){
     this->puertoDestino = puertoDestino;
 }
-Filtro::setIpOrigen(std::string ipOrigen){
+void Filtro::setIpOrigen(std::string ipOrigen){
     this->ipOrigen = ipOrigen;
 }
-Filtro::setIpDestino(std::string ipDestino){
+void Filtro::setIpDestino(std::string ipDestino){
     this->ipDestino = ipDestino;
 }
