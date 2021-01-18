@@ -110,7 +110,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
     return;
 }
 void Capturador::iniciarCaptura(){
-    fwrite(Capturador::archivoSalida, "{\"Paquetes\":[");
+    fprintf(Capturador::archivoSalida, "{\"Paquetes\":[");
     pcap_t *handle;
     char error_buffer[PCAP_ERRBUF_SIZE];
     const u_char *packet;
