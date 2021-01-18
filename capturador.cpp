@@ -24,7 +24,7 @@ void Capturador::iniciarCaptura(){
     char error_buffer[PCAP_ERRBUF_SIZE];
     const u_char *packet;
     struct pcap_pkthdr packet_header;
-    std::cout<<this->interface->name<<'\n';
+    std::cout<<"la interface es: "<<this->interface->name<<'\n';
     handle = pcap_open_live(
         this->interface->name,
         BUFSIZ,
