@@ -3,6 +3,8 @@
 
 #include <string>
 #include "paqueteTCP.hpp"
+#include "json.hpp"
+using json = nlohmann::json;
 class PaqueteTCPHTTP : public PaqueteTCP
 {
 private:
@@ -18,5 +20,18 @@ private:
 public:
     PaqueteTCPHTTP(float version, std::string tipoServicio, int tamanio, int longitudTotal, int identificador, int indicadores, int posicionFragmentos, std::string rellenos, int numeroDeSecuencia, int tamanioVentana, int numeroACK, std::string offsetDeDatos, std::string options, std::string banderas, std::string res, std::string punteroUrgente, long long int idCaptura, int tipo, std::string datosRAW, int aplicacion, time_t fechaCaptura, std::string ipOrigen, std::string ipDestino, int puertoOrigen, int puertoDestino, std::string checksum) : PaqueteTCP(numeroDeSecuencia, tamanioVentana, numeroACK, offsetDeDatos, options, banderas, res, punteroUrgente, idCaptura, tipo, datosRAW, aplicacion, fechaCaptura, ipOrigen, ipDestino, puertoOrigen, puertoDestino, checksum), version(version), tipoServicio(tipoServicio), tamanio(tamanio), longitudTotal(longitudTotal), identificador(identificador), indicadores(indicadores), posicionFragmentos(posicionFragmentos), rellenos(rellenos) {}
     PaqueteTCPHTTP(float version, std::string tipoServicio, int tamanio, int longitudTotal, int identificador, int indicadores, int posicionFragmentos, std::string rellenos, PaqueteTCP base) : PaqueteTCP(base), version(version), tipoServicio(tipoServicio), tamanio(tamanio), longitudTotal(longitudTotal), identificador(identificador), indicadores(indicadores), posicionFragmentos(posicionFragmentos), rellenos(rellenos) {}
+    std::string toJson()
+    {
+        json output = json::parse(PaqueteTCP::toJson());
+        output["version"] = version;
+        output["tipoServicio"] = tipoServicio;
+        output["tamanio"] = tamanio;
+        output["longitudTotal"] = longitudTotal;
+        output["identificador"] = identificador;
+        output["indicadores"] = indicadores;
+        output["posicionFragmentos"] = posicionFragmentos;
+        output["rellenos"] = rellenos;
+        return output.dump();
+    }
 };
 #endif
