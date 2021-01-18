@@ -87,7 +87,7 @@ void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet
                     std::cout<<"                Sub tipo de mensaje: "<<igmpXD->code<<'\n';                                        
                     paqueteAGuardar["subTipoMensaje"] = (int)igmpXD->code;
                     std::cout<<"                Checksum: "<<igmpXD->csum<<'\n';                   
-                    paqueteAGuardar["checksum"] = igmpXD->checksum; 
+                    paqueteAGuardar["checksum"] = igmpXD->csum; 
                     std::cout<<"                Data: "<<Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(igmphdr))<<'\n';
                     paqueteAGuardar["data"] = Util::dataToHex(packet_body+14+(int)(iph->ihl*4)+sizeof(icmphdr));
                 }		    
