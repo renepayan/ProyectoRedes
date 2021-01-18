@@ -24,24 +24,51 @@ void Capturador::print_packet_info(const u_char *packet, struct pcap_pkthdr pack
     printf("Packet total length %d\n", packet_header.len);
 }
 void Capturador::my_packet_handler(u_char *args,const struct pcap_pkthdr *packet_header,const u_char *packet_body){
-     struct ether_header *eth_header;
-    /* The packet is larger than the ether_header struct,
-       but we just want to look at the first part of the packet
-       that contains the header. We force the compiler
-       to treat the pointer to the packet as just a pointer
-       to the ether_header. The data payload of the packet comes
-       after the headers. Different packet types have different header
-       lengths though, but the ethernet header is always the same (14 bytes) */
+    struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet_body;
+    if (ntohs(eth_header->ether_type) != ETHERTYPE_IP) {
+        printf("Not an IP packet. Skipping...\n\n");
+        return;
+    }    
+    printf("Total packet available: %d bytes\n", header->caplen);
+    printf("Expected packet size: %d bytes\n", header->len);
+    const u_char *ip_header;
+    const u_char *tcp_header;
+    const u_char *payload;
     
-    if (ntohs(eth_header->ether_type) == ETHERTYPE_IP) {
-        printf("IP\n");
-    } else  if (ntohs(eth_header->ether_type) == ETHERTYPE_ARP) {
-        printf("ARP\n");
-    } else  if (ntohs(eth_header->ether_type) == ETHERTYPE_REVARP) {
-        printf("Reverse ARP\n");
+    int ethernet_header_length = 14; 
+    int ip_header_length;
+    int tcp_header_length;
+    int payload_length;    
+    ip_header = packet_body + ethernet_header_length;
+    ip_header_length = ((*ip_header) & 0x0F);    
+    ip_header_length = ip_header_length * 4;
+    printf("IP header length (IHL) in bytes: %d\n", ip_header_length);
+    u_char protocol = *(ip_header + 9);
+    if (protocol != IPPROTO_TCP) {
+        printf("Not a TCP packet. Skipping...\n\n");
+        return;
     }
-    //print_packet_info(packet_body, *packet_header);
+    tcp_header = packet_body + ethernet_header_length + ip_header_length;    
+    tcp_header_length = ((*(tcp_header + 12)) & 0xF0) >> 4;    
+    tcp_header_length = tcp_header_length * 4;
+    printf("TCP header length in bytes: %d\n", tcp_header_length);
+    int total_headers_size = ethernet_header_length+ip_header_length+tcp_header_length;
+    printf("Size of all headers combined: %d bytes\n", total_headers_size);
+    payload_length = header->caplen -(ethernet_header_length + ip_header_length + tcp_header_length);
+    printf("Payload size: %d bytes\n", payload_length);
+    payload = packet + total_headers_size;
+    printf("Memory address where payload begins: %p\n\n", payload);
+    
+    if (payload_length > 0) {
+        const u_char *temp_pointer = payload;
+        int byte_count = 0;
+        while (byte_count++ < payload_length) {
+            printf("%c", *temp_pointer);
+            temp_pointer++;
+        }
+        printf("\n");
+    }
     return;
 }
 void Capturador::iniciarCaptura(){
