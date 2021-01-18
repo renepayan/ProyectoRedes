@@ -19,7 +19,7 @@ std::string Util::intToIpAddress(uint32_t ip){
     return retorno;
 }
 std::string Util::dataToHex(const unsigned char *data){
-    std::string retrono;
+    std::string retorno;
     for (unsigned char c = *data; c; c=*++data) {
         retorno+=Util::intToHexString((int)c);
     }
